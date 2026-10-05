@@ -1,0 +1,28 @@
+{
+  "detection": {
+    "pr_auc": 0.9389158700530313,
+    "roc_auc": 0.9853539739508121,
+    "recall@1%fpr": 0.6132624651986839
+  },
+  "fit_s": 37.0242383480072,
+  "n_shapelets": 1000,
+  "reid": {
+    "frac_exact_in_some_member": 1.0,
+    "frac_unique_customer": 0.872,
+    "frac_unique_among_nonzero": 0.9540481400437637,
+    "n_distinct_customers_singled_out": 841,
+    "n_singled_out_suspicious": 203,
+    "frac_singled_out_are_members": 1.0,
+    "median_matches": 1.0,
+    "n_candidates": 29946
+  },
+  "attribute": {
+    "median_nonzero_cells_revealed_per_unique_shapelet": 12.0,
+    "median_max_weekly_amount_revealed": 26247.202870532255
+  },
+  "mia": {
+    "auc": 0.519267012151961,
+    "tpr@0.1%fpr": 0.0010716317558831135,
+    "tpr@1%fpr": 0.010716317558831135
+  }
+}

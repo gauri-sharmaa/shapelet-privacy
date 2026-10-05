@@ -38,6 +38,7 @@ t.append(r"""\begin{table}[t]
 \caption{Detection on held-out accounts and leakage of the released model (mean $\pm$ std over %d seeds). Re-ID: share of released shapelets that match \emph{only} their source customer among %s candidate accounts.}
 \label{tab:main}
 \small\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{%%
 \begin{tabular}{lcccc}
 \toprule
 Model & PR-AUC & R@1\%%FPR & MIA AUC & Re-ID (\%%) \\
@@ -49,9 +50,11 @@ t.append(f"Shapelet transform & {ms([g(r, 'detection', 'pr_auc') for r in stc])}
          f"{ms([g(r, 'mia', 'auc') for r in stc])} & {ms([g(r, 'reid', 'unique_match') for r in stc], True)} \\\\")
 t.append(f"RDST & {ms([g(r, 'detection', 'pr_auc') for r in rdst])} & {ms([g(r, 'detection', 'recall@1%fpr') for r in rdst])} & "
          f"{ms([g(r, 'mia', 'auc') for r in rdst])} & {ms([g(r, 'reid', 'frac_unique_customer') for r in rdst], True)} \\\\")
+t.append(f"RDST, norm.-only, no stats & {ms([g(r, 'detection', 'pr_auc') for r in rdn])} & {ms([g(r, 'detection', 'recall@1%fpr') for r in rdn])} & "
+         f"{ms([g(r, 'mia', 'auc') for r in rdn])} & {ms([g(r, 'reid', 'frac_unique_customer') for r in rdn], True)} \\\\")
 t.append(f"Learned shapelets & {ms([g(r, 'learned', 'detection', 'pr_auc') for r in dfn])} & {ms([g(r, 'learned', 'detection', 'recall@1%fpr') for r in dfn])} & "
          f"{ms([g(r, 'learned', 'mia', 'auc') for r in dfn])} & 0.0 \\\\")
-t.append(r"\bottomrule\end{tabular}\end{table}")
+t.append(r"\bottomrule\end{tabular}}\end{table}")
 
 t.append(r"""\begin{table}[t]
 \caption{Mitigations (shapelet transform; mean over seeds). Unique: shapelet matches only its source; Top-1: source is the nearest account.}

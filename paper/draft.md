@@ -1,3 +1,5 @@
+> **Superseded by `paper/main.tex` / `paper/main.pdf` (final 3-seed numbers).** Kept as the original outline.
+
 # Interpretable by Construction, Identifiable by Construction: Privacy Leakage of Shapelet-Based Anti-Money-Laundering Models
 
 *Draft for the ICAIF 2026 Workshop on Financial AI Security, Privacy and Safety (4 pages + refs). Numbers marked † are seed 0; final tables report mean ± std over 3 seeds (`results/RESULTS.md`).*

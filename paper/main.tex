@@ -41,7 +41,7 @@ A bank trains a shapelet AML detector and shares the fitted model with a vendor,
 
 \textbf{Shape alone identifies.} Z-normalised shapelet-transform shapelets carry no amounts, yet \stcUnique\% match only their source among $\sim$30k accounts (top-1: \stcTop\%).
 
-\textbf{State of the art leaks more.} RDST is the most accurate shapelet model here but stores normalisation statistics, so \rdstUnique\% of its shapelets reconstruct an exact, unique slice of one customer's history: about \rdstCust{} customers per model, each with a median of \rdstCells{} exact non-zero weekly amount/count cells (median peak weekly amount $\approx$\,\pounds\rdstAmt{}k). Withholding the statistics and forcing normalisation still leaves \rdnUnique\% unique matches (PR-AUC \rdnPR).
+\textbf{State of the art leaks more.} RDST is the most accurate shapelet model here but stores normalisation statistics, so \rdstUnique\% of its shapelets reconstruct an exact, unique slice of one customer's history: about \rdstCust{} customers per model, each with a median of \rdstCells{} exact non-zero weekly amount/count cells (median peak weekly amount $\approx$\,\pounds\rdstAmt{}k). Withholding the statistics and forcing every shapelet to be normalised barely helps: \rdnUnique\% of shapelets still match a single customer (PR-AUC drops to \rdnPR), because a multi-channel dilated shape is itself a near-unique fingerprint---and once an account is re-identified, the adversary's own data supplies its amounts.
 
 \textbf{The model discloses suspicion.} \stcSusp\% of shapelet-transform sources and \rdstSusp{} RDST-identified customers are positives. Releasing the model therefore reveals which customers were flagged, in tension with suspicious-activity-report confidentiality and anti-tipping-off rules.
 
@@ -58,7 +58,7 @@ A bank trains a shapelet AML detector and shares the fitted model with a vendor,
 \section{Discussion and Limitations}
 SAML-D is synthetic and activity-matched sampling makes detection optimistic; however, the leakage mechanism (copied subsequences, stored statistics) does not depend on the data. Our shapelet transform is a faithful simplification (AUC-based quality instead of information gain) because a standard implementation degenerated on our sparse series. The attack assumes the adversary's pool contains the source; consortium AML and model-sharing make this plausible. Noise and learned shapelets carry no formal guarantee; differentially private shapelet selection and DP-SGD training are natural next steps.
 
-\textbf{Recommendations.} Treat shapelets as personal data; never release normalisation statistics; prefer learned or noised shapelets; and audit interpretable financial models with \emph{per-explanation} re-identification, not only aggregate membership inference.
+\textbf{Recommendations.} Treat shapelets as personal data; do not rely on withholding normalisation statistics; prefer learned or noised shapelets; and audit interpretable financial models with \emph{per-explanation} re-identification, not only aggregate membership inference.
 
 \bibliographystyle{ACM-Reference-Format}
 \begin{thebibliography}{12}
