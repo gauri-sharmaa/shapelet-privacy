@@ -1,0 +1,26 @@
+{
+  "reid": {
+    "top1": 0.215,
+    "top10": 0.23,
+    "unique_match": 0.17,
+    "median_rank": 5438.0,
+    "n_candidates": 29946
+  },
+  "mia": {
+    "auc": 0.4970393936316609,
+    "tpr@0.1%fpr": 0.0009885102493798145,
+    "tpr@1%fpr": 0.009885102493798146
+  },
+  "n_shapelets": 200,
+  "n_source_accounts": 200,
+  "detection": {
+    "pr_auc": 0.8688152518534512,
+    "roc_auc": 0.94318618693218,
+    "recall@1%fpr": 0.4474816502151354
+  },
+  "fit_s": 33.00341439247131,
+  "source_label_counts": {
+    "suspicious": 125,
+    "normal": 75
+  }
+}
