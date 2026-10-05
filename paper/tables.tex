@@ -1,0 +1,31 @@
+\begin{table}[t]
+\caption{Detection on held-out accounts and leakage of the released model (mean $\pm$ std over 3 seeds). Re-ID: share of released shapelets that match \emph{only} their source customer among 29,946 candidate accounts.}
+\label{tab:main}
+\small\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccc}
+\toprule
+Model & PR-AUC & R@1\%FPR & MIA AUC & Re-ID (\%) \\
+\midrule
+CatBoost (aggregates) & 0.983\,$\pm$\,0.001 & 0.842\,$\pm$\,0.031 & 0.504\,$\pm$\,0.002 & n/a \\
+MiniRocket & 0.955\,$\pm$\,0.002 & 0.637\,$\pm$\,0.044 & 0.508\,$\pm$\,0.003 & n/a \\
+Shapelet transform & 0.878\,$\pm$\,0.007 & 0.493\,$\pm$\,0.033 & 0.500\,$\pm$\,0.002 & 15.0\,$\pm$\,2.2 \\
+RDST & 0.952 & 0.618 & 0.521 & 83.4 \\
+Learned shapelets & 0.957\,$\pm$\,0.004 & 0.667\,$\pm$\,0.017 & 0.500\,$\pm$\,0.000 & 0.0 \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[t]
+\caption{Mitigations (shapelet transform; mean over seeds). Unique: shapelet matches only its source; Top-1: source is the nearest account.}
+\label{tab:def}
+\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccc}
+\toprule
+Release & PR-AUC & Unique (\%) & Top-1 (\%) \\
+\midrule
+As trained & 0.878\,$\pm$\,0.007 & 15.0\,$\pm$\,2.2 & 19.3\,$\pm$\,1.6 \\
+Noise $\sigma{=}0.1$ & 0.879\,$\pm$\,0.007 & 0.0\,$\pm$\,0.0 & 10.8\,$\pm$\,2.5 \\
+Noise $\sigma{=}0.25$ & 0.877\,$\pm$\,0.007 & 0.0\,$\pm$\,0.0 & 3.2\,$\pm$\,0.5 \\
+Noise $\sigma{=}0.5$ & 0.876\,$\pm$\,0.005 & 0.0\,$\pm$\,0.0 & 0.2\,$\pm$\,0.2 \\
+Noise $\sigma{=}1.0$ & 0.870\,$\pm$\,0.004 & 0.0\,$\pm$\,0.0 & 0.0\,$\pm$\,0.0 \\
+$k$-anon. mean, $k{=}5$ & 0.877\,$\pm$\,0.007 & 0.3\,$\pm$\,0.2 & 13.5\,$\pm$\,0.4 \\
+$k$-anon. mean, $k{=}20$ & 0.876\,$\pm$\,0.005 & 0.2\,$\pm$\,0.2 & 12.5\,$\pm$\,2.1 \\
+$k$-anon. mean, $k{=}50$ & 0.876\,$\pm$\,0.006 & 0.0\,$\pm$\,0.0 & 10.7\,$\pm$\,1.3 \\
+\bottomrule\end{tabular}\end{table}

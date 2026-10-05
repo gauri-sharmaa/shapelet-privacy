@@ -1,0 +1,17 @@
+{
+  "k": 25,
+  "detection": {
+    "pr_auc": 0.8293614403856254,
+    "roc_auc": 0.9256979471948168,
+    "recall@1%fpr": 0.2781574284991141
+  },
+  "reid": {
+    "top1": 0.12,
+    "top10": 0.12,
+    "unique_match": 0.12,
+    "median_rank": 5890.0,
+    "n_candidates": 29946
+  },
+  "n_unique_customers": 3,
+  "n_unique_suspicious": 0
+}
