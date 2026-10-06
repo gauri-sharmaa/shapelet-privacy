@@ -1,0 +1,120 @@
+<title>Shapelet Leak Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one narrow column; five finding cards in a wrapping grid, then two plain bar charts. */
+:root {
+  --bg: #f5f7f9; --surface: #ffffff; --ink: #142028; --muted: #5b6b76; --rule: #d9e0e5;
+  --bad: #c2410c; --ok: #2f7d8c; --soft: rgba(194, 65, 12, 0.10);
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0f151a; --surface: #172028; --ink: #e6edf1; --muted: #93a3ae; --rule: #2a3741; --bad: #f08a4b; --ok: #5fb3c2; --soft: rgba(240, 138, 75, 0.14); color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #0f151a; --surface: #172028; --ink: #e6edf1; --muted: #93a3ae; --rule: #2a3741; --bad: #f08a4b; --ok: #5fb3c2; --soft: rgba(240, 138, 75, 0.14); color-scheme: dark; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 18px; line-height: 1.5; }
+.wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 40px 64px; display: grid; gap: 44px; }
+h1, h2 { font-family: var(--display); font-stretch: 85%; margin: 0; line-height: 1.1; text-wrap: balance; }
+h1 { font-size: clamp(32px, 6vw, 48px); font-weight: 800; }
+h2 { font-size: 24px; font-weight: 700; }
+p { margin: 0; max-width: 60ch; }
+section { display: grid; gap: 14px; }
+.sub { color: var(--muted); font-size: 19px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 16px; display: grid; gap: 6px; align-content: start; }
+.card b { font-family: var(--display); font-size: 44px; font-weight: 800; line-height: 1; color: var(--bad); font-variant-numeric: tabular-nums; }
+.card.good b { color: var(--ok); }
+.card span { font-size: 16px; }
+.card small { font-size: 14px; color: var(--muted); }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 16px; display: grid; gap: 10px; min-width: 0; }
+.chart { overflow-x: auto; }
+svg { display: block; width: 100%; height: auto; }
+svg text { font-family: var(--body); font-size: 12px; fill: var(--ink); }
+svg .num { font-family: var(--mono); font-size: 11px; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; }
+ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.note { font-size: 14px; color: var(--muted); }
+</style>
+
+<div class="wrap">
+  <header style="display:grid;gap:12px">
+    <h1>Explainable bank AI can leak real customers' bank histories</h1>
+    <p class="sub">Shapelet models explain a money-laundering alert with a short pattern. That pattern is often copied from a real customer. We tested how bad that is.</p>
+  </header>
+
+  <section>
+    <h2>What we found</h2>
+    <div class="cards">
+      <div class="card"><b>86%</b><span>of the best shapelet model's patterns point to exactly one real customer.</span><small>About 830 people per model, with their weekly amounts.</small></div>
+      <div class="card"><b>96%</b><span>of the attacker's guesses are right even when their copy of the data is messy.</span><small>Every amount off by 5%.</small></div>
+      <div class="card"><b>0.5</b><span>is what the usual privacy test scores on shapelet models. That's a coin flip, so it says "safe".</span><small>It misses the leak.</small></div>
+      <div class="card"><b>64%</b><span>on a second dataset too.</span><small>About 620 people per model on AMLworld.</small></div>
+      <div class="card"><b>~1 in 4</b><span>of the exposed people are flagged launderers.</span><small>Sharing the model reveals who is under suspicion.</small></div>
+      <div class="card good"><b>0</b><span>people exposed by learned shapelets.</span><small>Most accurate on dataset 1; less accurate on dataset 2.</small></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>People exposed per model</h2>
+    <div class="panel">
+      <div class="chart" id="exposed"></div>
+      <div class="legend"><span><i style="background:var(--bad)"></i>SAML-D</span><span><i style="background:var(--ok)"></i>AMLworld</span></div>
+      <p class="note">Normal models (CatBoost, MiniRocket) don't store anyone's data, so they expose no one this way.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>When does the attack stop working?</h2>
+    <p>When the attacker only sees part of each person's transactions.</p>
+    <div class="panel">
+      <div class="chart" id="view"></div>
+      <p class="note">Share of the attacker's guesses that are correct (best shapelet model, SAML-D).</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Bottom line</h2>
+    <ul>
+      <li>Sharing a shapelet model can share pieces of real customers' histories, including who was flagged.</li>
+      <li>The usual privacy test won't catch it.</li>
+      <li>Hiding the amounts doesn't fix it. Learned shapelets do.</li>
+    </ul>
+    <p class="note">Limits: both datasets are synthetic, and the attacker needs most of a person's transactions.</p>
+  </section>
+</div>
+
+<script>
+const NS = "http://www.w3.org/2000/svg";
+function el(t, a, p) { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; }
+function svg(id, w, h) { const host = document.getElementById(id); host.innerHTML = ""; return el("svg", { viewBox: `0 0 ${w} ${h}`, role: "img" }, host); }
+
+function exposed() {
+  const rows = [["CatBoost", 0, 0], ["MiniRocket", 0, 0], ["Classic shapelets", 30, 12], ["Best shapelets (RDST)", 827, 621], ["RDST, amounts hidden", 732, 391], ["Learned shapelets", 0, 0]];
+  const W = 700, L = 170, R = 50, rh = 44, bh = 15, H = rows.length * rh + 4, max = 900, g = svg("exposed", W, H);
+  rows.forEach((r, i) => {
+    const y = i * rh + 4;
+    el("text", { x: L - 10, y: y + 22, "text-anchor": "end" }, g).textContent = r[0];
+    [[r[1], "var(--bad)", 0], [r[2], "var(--ok)", bh + 3]].forEach(([v, c, off]) => {
+      const w = Math.max((W - L - R) * v / max, 2);
+      el("rect", { x: L, y: y + off + 3, width: w, height: bh, rx: 2, fill: c }, g);
+      el("text", { x: L + w + 6, y: y + off + 15, class: "num" }, g).textContent = v === 0 ? "0" : "~" + v;
+    });
+  });
+}
+
+function view() {
+  const rows = [["Sees everything", 96], ["Sees 80% of transactions", 78], ["Sees 50% of transactions", 27]];
+  const W = 700, L = 190, R = 50, rh = 40, H = rows.length * rh + 4, g = svg("view", W, H);
+  rows.forEach((r, i) => {
+    const y = i * rh + 4, w = (W - L - R) * r[1] / 100;
+    el("text", { x: L - 10, y: y + 22, "text-anchor": "end" }, g).textContent = r[0];
+    el("rect", { x: L, y: y + 8, width: W - L - R, height: 20, rx: 3, fill: "var(--soft)" }, g);
+    el("rect", { x: L, y: y + 8, width: w, height: 20, rx: 3, fill: "var(--bad)" }, g);
+    el("text", { x: L + w + 6, y: y + 23, class: "num" }, g).textContent = r[1] + "%";
+  });
+}
+exposed(); view();
+</script>
