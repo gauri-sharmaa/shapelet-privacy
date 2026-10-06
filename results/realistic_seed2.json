@@ -1,0 +1,657 @@
+{
+  "seed": 2,
+  "stc": {
+    "exact|pool=1.0|ratio=1.5": {
+      "claims": 35,
+      "correct": 35,
+      "precision": 1.0,
+      "recall": 0.175,
+      "recall_given_in_pool": 0.175,
+      "customers_exposed": 35,
+      "suspicious_exposed": 11
+    },
+    "exact|pool=1.0|ratio=2.0": {
+      "claims": 35,
+      "correct": 35,
+      "precision": 1.0,
+      "recall": 0.175,
+      "recall_given_in_pool": 0.175,
+      "customers_exposed": 35,
+      "suspicious_exposed": 11
+    },
+    "exact|pool=1.0|ratio=3.0": {
+      "claims": 35,
+      "correct": 35,
+      "precision": 1.0,
+      "recall": 0.175,
+      "recall_given_in_pool": 0.175,
+      "customers_exposed": 35,
+      "suspicious_exposed": 11
+    },
+    "exact|pool=0.5|ratio=1.5": {
+      "claims": 32,
+      "correct": 26,
+      "precision": 0.8125,
+      "recall": 0.13,
+      "recall_given_in_pool": 0.22033898305084745,
+      "customers_exposed": 26,
+      "suspicious_exposed": 10
+    },
+    "exact|pool=0.5|ratio=2.0": {
+      "claims": 32,
+      "correct": 26,
+      "precision": 0.8125,
+      "recall": 0.13,
+      "recall_given_in_pool": 0.22033898305084745,
+      "customers_exposed": 26,
+      "suspicious_exposed": 10
+    },
+    "exact|pool=0.5|ratio=3.0": {
+      "claims": 31,
+      "correct": 26,
+      "precision": 0.8387096774193549,
+      "recall": 0.13,
+      "recall_given_in_pool": 0.22033898305084745,
+      "customers_exposed": 26,
+      "suspicious_exposed": 10
+    },
+    "exact|pool=0.1|ratio=1.5": {
+      "claims": 17,
+      "correct": 4,
+      "precision": 0.23529411764705882,
+      "recall": 0.02,
+      "recall_given_in_pool": 0.16,
+      "customers_exposed": 4,
+      "suspicious_exposed": 4
+    },
+    "exact|pool=0.1|ratio=2.0": {
+      "claims": 13,
+      "correct": 4,
+      "precision": 0.3076923076923077,
+      "recall": 0.02,
+      "recall_given_in_pool": 0.16,
+      "customers_exposed": 4,
+      "suspicious_exposed": 4
+    },
+    "exact|pool=0.1|ratio=3.0": {
+      "claims": 8,
+      "correct": 4,
+      "precision": 0.5,
+      "recall": 0.02,
+      "recall_given_in_pool": 0.16,
+      "customers_exposed": 4,
+      "suspicious_exposed": 4
+    },
+    "amounts \u00b15%|pool=1.0|ratio=1.5": {
+      "claims": 33,
+      "correct": 25,
+      "precision": 0.7575757575757576,
+      "recall": 0.125,
+      "recall_given_in_pool": 0.125,
+      "customers_exposed": 25,
+      "suspicious_exposed": 4
+    },
+    "amounts \u00b15%|pool=1.0|ratio=2.0": {
+      "claims": 32,
+      "correct": 25,
+      "precision": 0.78125,
+      "recall": 0.125,
+      "recall_given_in_pool": 0.125,
+      "customers_exposed": 25,
+      "suspicious_exposed": 4
+    },
+    "amounts \u00b15%|pool=1.0|ratio=3.0": {
+      "claims": 29,
+      "correct": 23,
+      "precision": 0.7931034482758621,
+      "recall": 0.115,
+      "recall_given_in_pool": 0.115,
+      "customers_exposed": 23,
+      "suspicious_exposed": 4
+    },
+    "amounts \u00b15%|pool=0.5|ratio=1.5": {
+      "claims": 28,
+      "correct": 16,
+      "precision": 0.5714285714285714,
+      "recall": 0.08,
+      "recall_given_in_pool": 0.13559322033898305,
+      "customers_exposed": 16,
+      "suspicious_exposed": 2
+    },
+    "amounts \u00b15%|pool=0.5|ratio=2.0": {
+      "claims": 25,
+      "correct": 16,
+      "precision": 0.64,
+      "recall": 0.08,
+      "recall_given_in_pool": 0.13559322033898305,
+      "customers_exposed": 16,
+      "suspicious_exposed": 2
+    },
+    "amounts \u00b15%|pool=0.5|ratio=3.0": {
+      "claims": 23,
+      "correct": 15,
+      "precision": 0.6521739130434783,
+      "recall": 0.075,
+      "recall_given_in_pool": 0.1271186440677966,
+      "customers_exposed": 15,
+      "suspicious_exposed": 2
+    },
+    "amounts \u00b15%|pool=0.1|ratio=1.5": {
+      "claims": 16,
+      "correct": 3,
+      "precision": 0.1875,
+      "recall": 0.015,
+      "recall_given_in_pool": 0.12,
+      "customers_exposed": 3,
+      "suspicious_exposed": 3
+    },
+    "amounts \u00b15%|pool=0.1|ratio=2.0": {
+      "claims": 12,
+      "correct": 3,
+      "precision": 0.25,
+      "recall": 0.015,
+      "recall_given_in_pool": 0.12,
+      "customers_exposed": 3,
+      "suspicious_exposed": 3
+    },
+    "amounts \u00b15%|pool=0.1|ratio=3.0": {
+      "claims": 8,
+      "correct": 3,
+      "precision": 0.375,
+      "recall": 0.015,
+      "recall_given_in_pool": 0.12,
+      "customers_exposed": 3,
+      "suspicious_exposed": 3
+    },
+    "80% of txns, \u00b15%|pool=1.0|ratio=1.5": {
+      "claims": 19,
+      "correct": 6,
+      "precision": 0.3157894736842105,
+      "recall": 0.03,
+      "recall_given_in_pool": 0.03,
+      "customers_exposed": 6,
+      "suspicious_exposed": 3
+    },
+    "80% of txns, \u00b15%|pool=1.0|ratio=2.0": {
+      "claims": 16,
+      "correct": 5,
+      "precision": 0.3125,
+      "recall": 0.025,
+      "recall_given_in_pool": 0.025,
+      "customers_exposed": 5,
+      "suspicious_exposed": 2
+    },
+    "80% of txns, \u00b15%|pool=1.0|ratio=3.0": {
+      "claims": 8,
+      "correct": 2,
+      "precision": 0.25,
+      "recall": 0.01,
+      "recall_given_in_pool": 0.01,
+      "customers_exposed": 2,
+      "suspicious_exposed": 2
+    },
+    "80% of txns, \u00b15%|pool=0.5|ratio=1.5": {
+      "claims": 18,
+      "correct": 5,
+      "precision": 0.2777777777777778,
+      "recall": 0.025,
+      "recall_given_in_pool": 0.0423728813559322,
+      "customers_exposed": 5,
+      "suspicious_exposed": 3
+    },
+    "80% of txns, \u00b15%|pool=0.5|ratio=2.0": {
+      "claims": 13,
+      "correct": 3,
+      "precision": 0.23076923076923078,
+      "recall": 0.015,
+      "recall_given_in_pool": 0.025423728813559324,
+      "customers_exposed": 3,
+      "suspicious_exposed": 1
+    },
+    "80% of txns, \u00b15%|pool=0.5|ratio=3.0": {
+      "claims": 7,
+      "correct": 1,
+      "precision": 0.14285714285714285,
+      "recall": 0.005,
+      "recall_given_in_pool": 0.00847457627118644,
+      "customers_exposed": 1,
+      "suspicious_exposed": 1
+    },
+    "80% of txns, \u00b15%|pool=0.1|ratio=1.5": {
+      "claims": 19,
+      "correct": 3,
+      "precision": 0.15789473684210525,
+      "recall": 0.015,
+      "recall_given_in_pool": 0.12,
+      "customers_exposed": 3,
+      "suspicious_exposed": 3
+    },
+    "80% of txns, \u00b15%|pool=0.1|ratio=2.0": {
+      "claims": 14,
+      "correct": 2,
+      "precision": 0.14285714285714285,
+      "recall": 0.01,
+      "recall_given_in_pool": 0.08,
+      "customers_exposed": 2,
+      "suspicious_exposed": 2
+    },
+    "80% of txns, \u00b15%|pool=0.1|ratio=3.0": {
+      "claims": 10,
+      "correct": 2,
+      "precision": 0.2,
+      "recall": 0.01,
+      "recall_given_in_pool": 0.08,
+      "customers_exposed": 2,
+      "suspicious_exposed": 2
+    },
+    "50% of txns, \u00b15%|pool=1.0|ratio=1.5": {
+      "claims": 14,
+      "correct": 1,
+      "precision": 0.07142857142857142,
+      "recall": 0.005,
+      "recall_given_in_pool": 0.005,
+      "customers_exposed": 1,
+      "suspicious_exposed": 1
+    },
+    "50% of txns, \u00b15%|pool=1.0|ratio=2.0": {
+      "claims": 11,
+      "correct": 1,
+      "precision": 0.09090909090909091,
+      "recall": 0.005,
+      "recall_given_in_pool": 0.005,
+      "customers_exposed": 1,
+      "suspicious_exposed": 1
+    },
+    "50% of txns, \u00b15%|pool=1.0|ratio=3.0": {
+      "claims": 6,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_given_in_pool": 0.0,
+      "customers_exposed": 0,
+      "suspicious_exposed": 0
+    },
+    "50% of txns, \u00b15%|pool=0.5|ratio=1.5": {
+      "claims": 15,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_given_in_pool": 0.0,
+      "customers_exposed": 0,
+      "suspicious_exposed": 0
+    },
+    "50% of txns, \u00b15%|pool=0.5|ratio=2.0": {
+      "claims": 9,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_given_in_pool": 0.0,
+      "customers_exposed": 0,
+      "suspicious_exposed": 0
+    },
+    "50% of txns, \u00b15%|pool=0.5|ratio=3.0": {
+      "claims": 7,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_given_in_pool": 0.0,
+      "customers_exposed": 0,
+      "suspicious_exposed": 0
+    },
+    "50% of txns, \u00b15%|pool=0.1|ratio=1.5": {
+      "claims": 14,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_given_in_pool": 0.0,
+      "customers_exposed": 0,
+      "suspicious_exposed": 0
+    },
+    "50% of txns, \u00b15%|pool=0.1|ratio=2.0": {
+      "claims": 7,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_given_in_pool": 0.0,
+      "customers_exposed": 0,
+      "suspicious_exposed": 0
+    },
+    "50% of txns, \u00b15%|pool=0.1|ratio=3.0": {
+      "claims": 6,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "recall_given_in_pool": 0.0,
+      "customers_exposed": 0,
+      "suspicious_exposed": 0
+    }
+  },
+  "rdst": {
+    "frac_identifiable_exact": 0.8633333333333333,
+    "exact|pool=1.0|ratio=1.5": {
+      "claims": 270,
+      "correct": 259,
+      "precision": 0.9592592592592593,
+      "recall": 0.8633333333333333,
+      "recall_given_in_pool": 1.0,
+      "customers_exposed": 255,
+      "suspicious_exposed": 53
+    },
+    "exact|pool=1.0|ratio=2.0": {
+      "claims": 270,
+      "correct": 259,
+      "precision": 0.9592592592592593,
+      "recall": 0.8633333333333333,
+      "recall_given_in_pool": 1.0,
+      "customers_exposed": 255,
+      "suspicious_exposed": 53
+    },
+    "exact|pool=1.0|ratio=3.0": {
+      "claims": 270,
+      "correct": 259,
+      "precision": 0.9592592592592593,
+      "recall": 0.8633333333333333,
+      "recall_given_in_pool": 1.0,
+      "customers_exposed": 255,
+      "suspicious_exposed": 53
+    },
+    "exact|pool=0.5|ratio=1.5": {
+      "claims": 156,
+      "correct": 120,
+      "precision": 0.7692307692307693,
+      "recall": 0.4,
+      "recall_given_in_pool": 1.0,
+      "customers_exposed": 119,
+      "suspicious_exposed": 22
+    },
+    "exact|pool=0.5|ratio=2.0": {
+      "claims": 137,
+      "correct": 120,
+      "precision": 0.8759124087591241,
+      "recall": 0.4,
+      "recall_given_in_pool": 1.0,
+      "customers_exposed": 119,
+      "suspicious_exposed": 22
+    },
+    "exact|pool=0.5|ratio=3.0": {
+      "claims": 128,
+      "correct": 120,
+      "precision": 0.9375,
+      "recall": 0.4,
+      "recall_given_in_pool": 1.0,
+      "customers_exposed": 119,
+      "suspicious_exposed": 22
+    },
+    "exact|pool=0.1|ratio=1.5": {
+      "claims": 72,
+      "correct": 24,
+      "precision": 0.3333333333333333,
+      "recall": 0.08,
+      "recall_given_in_pool": 1.0,
+      "customers_exposed": 24,
+      "suspicious_exposed": 7
+    },
+    "exact|pool=0.1|ratio=2.0": {
+      "claims": 51,
+      "correct": 24,
+      "precision": 0.47058823529411764,
+      "recall": 0.08,
+      "recall_given_in_pool": 1.0,
+      "customers_exposed": 24,
+      "suspicious_exposed": 7
+    },
+    "exact|pool=0.1|ratio=3.0": {
+      "claims": 39,
+      "correct": 24,
+      "precision": 0.6153846153846154,
+      "recall": 0.08,
+      "recall_given_in_pool": 1.0,
+      "customers_exposed": 24,
+      "suspicious_exposed": 7
+    },
+    "amounts \u00b15%|pool=1.0|ratio=1.5": {
+      "claims": 254,
+      "correct": 240,
+      "precision": 0.9448818897637795,
+      "recall": 0.8,
+      "recall_given_in_pool": 0.9266409266409267,
+      "customers_exposed": 236,
+      "suspicious_exposed": 52
+    },
+    "amounts \u00b15%|pool=1.0|ratio=2.0": {
+      "claims": 243,
+      "correct": 234,
+      "precision": 0.9629629629629629,
+      "recall": 0.78,
+      "recall_given_in_pool": 0.9034749034749034,
+      "customers_exposed": 230,
+      "suspicious_exposed": 52
+    },
+    "amounts \u00b15%|pool=1.0|ratio=3.0": {
+      "claims": 232,
+      "correct": 226,
+      "precision": 0.9741379310344828,
+      "recall": 0.7533333333333333,
+      "recall_given_in_pool": 0.8725868725868726,
+      "customers_exposed": 222,
+      "suspicious_exposed": 51
+    },
+    "amounts \u00b15%|pool=0.5|ratio=1.5": {
+      "claims": 144,
+      "correct": 110,
+      "precision": 0.7638888888888888,
+      "recall": 0.36666666666666664,
+      "recall_given_in_pool": 0.9166666666666666,
+      "customers_exposed": 109,
+      "suspicious_exposed": 22
+    },
+    "amounts \u00b15%|pool=0.5|ratio=2.0": {
+      "claims": 124,
+      "correct": 109,
+      "precision": 0.8790322580645161,
+      "recall": 0.36333333333333334,
+      "recall_given_in_pool": 0.9083333333333333,
+      "customers_exposed": 108,
+      "suspicious_exposed": 22
+    },
+    "amounts \u00b15%|pool=0.5|ratio=3.0": {
+      "claims": 113,
+      "correct": 108,
+      "precision": 0.9557522123893806,
+      "recall": 0.36,
+      "recall_given_in_pool": 0.9,
+      "customers_exposed": 107,
+      "suspicious_exposed": 22
+    },
+    "amounts \u00b15%|pool=0.1|ratio=1.5": {
+      "claims": 74,
+      "correct": 23,
+      "precision": 0.3108108108108108,
+      "recall": 0.07666666666666666,
+      "recall_given_in_pool": 0.9583333333333334,
+      "customers_exposed": 23,
+      "suspicious_exposed": 7
+    },
+    "amounts \u00b15%|pool=0.1|ratio=2.0": {
+      "claims": 51,
+      "correct": 23,
+      "precision": 0.45098039215686275,
+      "recall": 0.07666666666666666,
+      "recall_given_in_pool": 0.9583333333333334,
+      "customers_exposed": 23,
+      "suspicious_exposed": 7
+    },
+    "amounts \u00b15%|pool=0.1|ratio=3.0": {
+      "claims": 37,
+      "correct": 23,
+      "precision": 0.6216216216216216,
+      "recall": 0.07666666666666666,
+      "recall_given_in_pool": 0.9583333333333334,
+      "customers_exposed": 23,
+      "suspicious_exposed": 7
+    },
+    "80% of txns, \u00b15%|pool=1.0|ratio=1.5": {
+      "claims": 122,
+      "correct": 95,
+      "precision": 0.7786885245901639,
+      "recall": 0.31666666666666665,
+      "recall_given_in_pool": 0.3667953667953668,
+      "customers_exposed": 94,
+      "suspicious_exposed": 26
+    },
+    "80% of txns, \u00b15%|pool=1.0|ratio=2.0": {
+      "claims": 83,
+      "correct": 73,
+      "precision": 0.8795180722891566,
+      "recall": 0.24333333333333335,
+      "recall_given_in_pool": 0.28185328185328185,
+      "customers_exposed": 73,
+      "suspicious_exposed": 20
+    },
+    "80% of txns, \u00b15%|pool=1.0|ratio=3.0": {
+      "claims": 64,
+      "correct": 59,
+      "precision": 0.921875,
+      "recall": 0.19666666666666666,
+      "recall_given_in_pool": 0.2277992277992278,
+      "customers_exposed": 59,
+      "suspicious_exposed": 18
+    },
+    "80% of txns, \u00b15%|pool=0.5|ratio=1.5": {
+      "claims": 87,
+      "correct": 48,
+      "precision": 0.5517241379310345,
+      "recall": 0.16,
+      "recall_given_in_pool": 0.4,
+      "customers_exposed": 47,
+      "suspicious_exposed": 13
+    },
+    "80% of txns, \u00b15%|pool=0.5|ratio=2.0": {
+      "claims": 52,
+      "correct": 32,
+      "precision": 0.6153846153846154,
+      "recall": 0.10666666666666667,
+      "recall_given_in_pool": 0.26666666666666666,
+      "customers_exposed": 32,
+      "suspicious_exposed": 8
+    },
+    "80% of txns, \u00b15%|pool=0.5|ratio=3.0": {
+      "claims": 35,
+      "correct": 25,
+      "precision": 0.7142857142857143,
+      "recall": 0.08333333333333333,
+      "recall_given_in_pool": 0.20833333333333334,
+      "customers_exposed": 25,
+      "suspicious_exposed": 7
+    },
+    "80% of txns, \u00b15%|pool=0.1|ratio=1.5": {
+      "claims": 60,
+      "correct": 11,
+      "precision": 0.18333333333333332,
+      "recall": 0.03666666666666667,
+      "recall_given_in_pool": 0.4583333333333333,
+      "customers_exposed": 11,
+      "suspicious_exposed": 6
+    },
+    "80% of txns, \u00b15%|pool=0.1|ratio=2.0": {
+      "claims": 37,
+      "correct": 5,
+      "precision": 0.13513513513513514,
+      "recall": 0.016666666666666666,
+      "recall_given_in_pool": 0.20833333333333334,
+      "customers_exposed": 5,
+      "suspicious_exposed": 3
+    },
+    "80% of txns, \u00b15%|pool=0.1|ratio=3.0": {
+      "claims": 27,
+      "correct": 5,
+      "precision": 0.18518518518518517,
+      "recall": 0.016666666666666666,
+      "recall_given_in_pool": 0.20833333333333334,
+      "customers_exposed": 5,
+      "suspicious_exposed": 3
+    },
+    "50% of txns, \u00b15%|pool=1.0|ratio=1.5": {
+      "claims": 58,
+      "correct": 15,
+      "precision": 0.25862068965517243,
+      "recall": 0.05,
+      "recall_given_in_pool": 0.05791505791505792,
+      "customers_exposed": 15,
+      "suspicious_exposed": 4
+    },
+    "50% of txns, \u00b15%|pool=1.0|ratio=2.0": {
+      "claims": 32,
+      "correct": 11,
+      "precision": 0.34375,
+      "recall": 0.03666666666666667,
+      "recall_given_in_pool": 0.04247104247104247,
+      "customers_exposed": 11,
+      "suspicious_exposed": 2
+    },
+    "50% of txns, \u00b15%|pool=1.0|ratio=3.0": {
+      "claims": 17,
+      "correct": 9,
+      "precision": 0.5294117647058824,
+      "recall": 0.03,
+      "recall_given_in_pool": 0.03474903474903475,
+      "customers_exposed": 9,
+      "suspicious_exposed": 1
+    },
+    "50% of txns, \u00b15%|pool=0.5|ratio=1.5": {
+      "claims": 52,
+      "correct": 8,
+      "precision": 0.15384615384615385,
+      "recall": 0.02666666666666667,
+      "recall_given_in_pool": 0.06666666666666667,
+      "customers_exposed": 8,
+      "suspicious_exposed": 3
+    },
+    "50% of txns, \u00b15%|pool=0.5|ratio=2.0": {
+      "claims": 28,
+      "correct": 6,
+      "precision": 0.21428571428571427,
+      "recall": 0.02,
+      "recall_given_in_pool": 0.05,
+      "customers_exposed": 6,
+      "suspicious_exposed": 2
+    },
+    "50% of txns, \u00b15%|pool=0.5|ratio=3.0": {
+      "claims": 13,
+      "correct": 5,
+      "precision": 0.38461538461538464,
+      "recall": 0.016666666666666666,
+      "recall_given_in_pool": 0.041666666666666664,
+      "customers_exposed": 5,
+      "suspicious_exposed": 1
+    },
+    "50% of txns, \u00b15%|pool=0.1|ratio=1.5": {
+      "claims": 50,
+      "correct": 1,
+      "precision": 0.02,
+      "recall": 0.0033333333333333335,
+      "recall_given_in_pool": 0.041666666666666664,
+      "customers_exposed": 1,
+      "suspicious_exposed": 1
+    },
+    "50% of txns, \u00b15%|pool=0.1|ratio=2.0": {
+      "claims": 33,
+      "correct": 1,
+      "precision": 0.030303030303030304,
+      "recall": 0.0033333333333333335,
+      "recall_given_in_pool": 0.041666666666666664,
+      "customers_exposed": 1,
+      "suspicious_exposed": 1
+    },
+    "50% of txns, \u00b15%|pool=0.1|ratio=3.0": {
+      "claims": 21,
+      "correct": 1,
+      "precision": 0.047619047619047616,
+      "recall": 0.0033333333333333335,
+      "recall_given_in_pool": 0.041666666666666664,
+      "customers_exposed": 1,
+      "suspicious_exposed": 1
+    }
+  },
+  "rdst_normonly": {}
+}

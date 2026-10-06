@@ -3,3 +3,4 @@ data/
 __pycache__/
 paper/*.aux
 paper/*.log
+runs/*/results/*.pkl

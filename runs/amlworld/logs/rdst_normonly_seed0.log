@@ -1,0 +1,1 @@
+RDST detection {'detection': {'pr_auc': 0.5470353846779886, 'roc_auc': 0.7686895473016372, 'recall@1%fpr': 0.10644831115660185}, 'fit_s': 32.49932384490967, 'n_shapelets': 1000}

@@ -1,11 +1,13 @@
 """Shared utilities: data loading, splits, shapelet distances, metrics."""
+import os
 import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
 from sklearn.metrics import average_precision_score, roc_auc_score, roc_curve
 from sklearn.model_selection import train_test_split
 
 
-def load(path="data/samld_weekly.npz", seed=0):
+def load(path=None, seed=0):
+    path = path or os.environ.get("DATA_NPZ", "data/samld_weekly.npz")
     d = np.load(path, allow_pickle=True)
     X, y = d["X"], d["y"].astype(int)
     idx = np.arange(len(y))

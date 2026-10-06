@@ -1,0 +1,228 @@
+<title>How Shapelets Leak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: single reading column (~760px) of stacked sections; charts span the column, stat strip wraps. */
+:root {
+  --bg: #f5f7f9;
+  --surface: #ffffff;
+  --ink: #142028;
+  --muted: #5b6b76;
+  --rule: #d9e0e5;
+  --in: #2f7d8c;      /* money in / normal */
+  --out: #c2410c;     /* money out / leak */
+  --hl: rgba(194, 65, 12, 0.12);
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f151a; --surface: #172028; --ink: #e6edf1; --muted: #93a3ae; --rule: #2a3741;
+    --in: #5fb3c2; --out: #f08a4b; --hl: rgba(240, 138, 75, 0.16); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f151a; --surface: #172028; --ink: #e6edf1; --muted: #93a3ae; --rule: #2a3741;
+  --in: #5fb3c2; --out: #f08a4b; --hl: rgba(240, 138, 75, 0.16); color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+.wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 40px 64px; display: grid; gap: 56px; }
+h1, h2 { font-family: var(--display); font-stretch: 85%; text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 800; }
+h2 { font-size: 26px; font-weight: 700; }
+p { margin: 0; max-width: 65ch; }
+section { display: grid; gap: 16px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 19px; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.stat { background: var(--surface); padding: 14px 16px; display: grid; gap: 2px; }
+.stat b { font-family: var(--display); font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 14px; color: var(--muted); }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; display: grid; gap: 8px; min-width: 0; }
+.panel h3 { margin: 0; font-size: 16px; font-weight: 600; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.tag { font-family: var(--mono); font-size: 12px; padding: 2px 8px; border-radius: 99px; border: 1px solid currentColor; }
+.tag.sus { color: var(--out); } .tag.nrm { color: var(--in); }
+.chart { overflow-x: auto; }
+svg { display: block; width: 100%; height: auto; }
+svg text { font-family: var(--mono); font-size: 10px; fill: var(--muted); }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; }
+.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; counter-reset: s; }
+.steps li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 14px 0; border-top: 1px solid var(--rule); counter-increment: s; }
+.steps li:last-child { border-bottom: 1px solid var(--rule); }
+.steps li::before { content: counter(s); font-family: var(--display); font-weight: 800; font-size: 26px; color: var(--out); line-height: 1; }
+.steps b { display: block; }
+.steps span { color: var(--muted); font-size: 15px; }
+.callout { border-left: 3px solid var(--out); padding: 4px 0 4px 16px; font-size: 18px; }
+.callout b { color: var(--out); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); }
+th { font-weight: 600; color: var(--muted); font-size: 13px; }
+td.n { font-family: var(--mono); }
+.note { font-size: 14px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .bar { transition: width .6s ease; } }
+</style>
+
+<div class="wrap">
+  <header style="display:grid;gap:14px">
+    <div class="eyebrow">Shapelet privacy study · SAML-D · 3 seeds</div>
+    <h1>How shapelets leak customers' bank histories</h1>
+    <p class="lede">Shapelet models explain a money-laundering alert by pointing at a short pattern in an account's activity. That pattern is often a copy of a real customer's transactions. This page walks through the data, the experiment and one real leak.</p>
+  </header>
+
+  <section>
+    <div class="eyebrow">1 · The data</div>
+    <h2>Every account becomes 46 weeks of activity</h2>
+    <p>SAML-D is a synthetic bank dataset of 9.5 million transactions. We add up each account's transactions per week into six channels: money out, money in, number of payments out and in, cross-border money, and cash. Normal accounts are picked so they are about as active as the suspicious ones; otherwise spotting launderers would be too easy.</p>
+    <div class="stats">
+      <div class="stat"><b>9.5M</b><span>transactions</span></div>
+      <div class="stat"><b>29,946</b><span>accounts studied</span></div>
+      <div class="stat"><b>7,902</b><span>suspicious accounts</span></div>
+      <div class="stat"><b>46 × 6</b><span>weeks × channels each</span></div>
+    </div>
+    <div class="panel">
+      <h3>A suspicious account <span class="tag sus" id="srcType"></span></h3>
+      <div class="chart" id="chSrc"></div>
+    </div>
+    <div class="panel">
+      <h3>A normal account with similar activity <span class="tag nrm">Normal</span></h3>
+      <div class="chart" id="chNrm"></div>
+      <div class="legend"><span><i style="background:var(--in)"></i>money in (above the line)</span><span><i style="background:var(--out)"></i>money out (below the line)</span></div>
+    </div>
+    <div class="panel">
+      <h3>Suspicious accounts by laundering pattern</h3>
+      <div class="chart" id="chTypes"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">2 · The experiment</div>
+    <h2>Train a detector, hand it over, try to find the people inside</h2>
+    <ol class="steps">
+      <li><div><b>Split the accounts in half</b><span>15k accounts train the model (members). The other 15k are never shown to it (non-members).</span></div></li>
+      <li><div><b>Train five detectors</b><span>CatBoost (what banks use), MiniRocket (a time-series model that copies nothing), and three shapelet models: classic, RDST (state of the art) and learned.</span></div></li>
+      <li><div><b>Release the model</b><span>The bank shares the fitted model with a vendor, auditor or partner bank. The shapelets go with it.</span></div></li>
+      <li><div><b>The attacker searches</b><span>For each shapelet, compare it with every one of the 29,946 accounts and look for an exact match.</span></div></li>
+      <li><div><b>Count the damage</b><span>How many shapelets match exactly one customer? How many of those customers are flagged launderers? Does the usual privacy test notice?</span></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="eyebrow">3 · One real leak</div>
+    <h2>A pattern stored in the model, and the one account it came from</h2>
+    <p>This is a real shapelet from the classic model (seed 0). It is ten weeks of "money out", stored in scaled form so it keeps only the shape, not the amounts.</p>
+    <div class="panel">
+      <h3>The shapelet stored inside the model</h3>
+      <div class="chart" id="chShp"></div>
+    </div>
+    <div class="panel">
+      <h3>The source account: money out, weeks 1–46</h3>
+      <div class="chart" id="chMatch"></div>
+      <p class="note">Shaded: weeks 35–44, where the shapelet matches exactly. Bar height uses a log scale so small and large payments both show.</p>
+    </div>
+    <p class="callout">Out of <b>29,946</b> accounts, exactly <b>one</b> matches this pattern with zero distance: the suspicious account it was copied from. The next closest account is at distance <span id="d2"></span>.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">4 · Results</div>
+    <h2>Shapelet models expose hundreds of customers per model</h2>
+    <div class="panel">
+      <h3>Share of released shapelets that point to exactly one customer</h3>
+      <div class="chart" id="chReid"></div>
+    </div>
+    <div class="panel" style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Model</th><th>Accuracy (PR-AUC)</th><th>Usual privacy test (AUC)</th><th>Customers exposed</th></tr></thead>
+        <tbody>
+          <tr><td>CatBoost</td><td class="n">0.983</td><td class="n">0.50</td><td>none found</td></tr>
+          <tr><td>MiniRocket</td><td class="n">0.955</td><td class="n">0.51</td><td>none found</td></tr>
+          <tr><td>Classic shapelets</td><td class="n">0.878</td><td class="n">0.50</td><td>~30 per model</td></tr>
+          <tr><td>RDST</td><td class="n">0.948</td><td class="n">0.52</td><td>~827, about 217 flagged</td></tr>
+          <tr><td>RDST, amounts withheld</td><td class="n">0.925</td><td class="n">0.51</td><td>~732, about 201 flagged</td></tr>
+          <tr><td>Learned shapelets</td><td class="n">0.957</td><td class="n">0.50</td><td>no exact copies</td></tr>
+        </tbody>
+      </table>
+      <p class="note">The usual privacy test scores about 0.5, a coin flip, for every model, so it would call all of them safe. Only a few hundred of 15,000 training accounts leak, and that is too few to move an average.</p>
+    </div>
+    <div class="panel">
+      <h3>Adding noise to classic shapelets: how often the closest account is still the right one</h3>
+      <div class="chart" id="chNoise"></div>
+      <p class="note">Accuracy stays at about 0.88 for every noise level. Exact matches disappear at the smallest noise, but nearest-match linkage needs σ ≥ 0.5 to stop.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">5 · What it means</div>
+    <h2>The explanation is the leak</h2>
+    <p>A bank that shares a shapelet model shares pieces of real customers' histories, including who was flagged. The usual privacy test does not see it. Learned shapelets were the most accurate shapelet model and copied nobody, so the fix costs no accuracy.</p>
+    <p class="note">Caveats: the data is synthetic; the attacker is assumed to hold the same account data as the bank. A weaker-attacker test and a second dataset are the next experiments.</p>
+  </section>
+</div>
+
+<script>
+const D = {"shp": {"values": [-0.5860000252723694, -0.5860000252723694, -0.5860000252723694, -0.5860000252723694, 0.6690000295639038, -0.5860000252723694, 2.50600004196167, 0.9300000071525574, -0.5860000252723694, -0.5860000252723694], "channel": "out_amt", "pos": 34, "len": 10, "nearest": [0.0, 0.03006163239479065, 0.032874058932065964, 0.03866497054696083, 0.04288877546787262], "n_accounts": 29946}, "srcType": "Deposit-Send", "src": {"out_amt": [0.0, 0.0, 490.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 432.0, 103.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 393646.0, 0.0, 0.0, 0.0, 1673766.0, 0.0, 45476.0, 123.0, 0.0, 0.0, 0.0, 0.0, 148.0, 0.0, 0.0, 0.0, 0.0, 76.0, 0.0, 44118.0, 188.0, 0.0, 0.0, 0.0, 0.0], "in_amt": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2162.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4717.0, 2850.0, 0.0, 0.0, 0.0, 0.0, 2139.0, 0.0, 0.0, 0.0, 44662.0, 0.0, 1966.0, 0.0, 0.0, 43672.0, 45280.0, 618.0, 2995.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 322.0, 0.0, 0.0]}, "nrm": {"out_amt": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "in_amt": [25661.0, 25549.0, 29521.0, 20240.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 44122.0, 15109.0, 0.0, 0.0, 0.0, 0.0, 22955.0, 22851.0, 0.0, 32668.0, 39373.0, 42303.0, 0.0, 0.0, 0.0, 18535.0, 24434.0, 0.0, 0.0, 42241.0, 0.0, 28423.0, 0.0, 0.0, 32991.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 50800.0, 0.0, 27698.0, 0.0]}, "types": {"Behavioural_Change_1": 447, "Behavioural_Change_2": 404, "Bipartite": 266, "Cash_Withdrawal": 176, "Cycle": 384, "Deposit-Send": 1035, "Fan_In": 404, "Fan_Out": 266, "Gather-Scatter": 392, "Layered_Fan_In": 547, "Layered_Fan_Out": 581, "Over-Invoicing": 81, "Scatter-Gather": 244, "Single_large": 295, "Smurfing": 126, "Stacked Bipartite": 309, "Structuring": 1945}};
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function svg(id, w, h) { const host = document.getElementById(id); host.innerHTML = ""; return el("svg", { viewBox: `0 0 ${w} ${h}`, role: "img" }, host); }
+const log = v => Math.log10(1 + v);
+
+function mirror(id, s, hl) {
+  const W = 700, H = 170, L = 34, R = 8, T = 10, B = 22, n = s.in_amt.length, bw = (W - L - R) / n, mid = T + (H - T - B) / 2, half = (H - T - B) / 2 - 2;
+  const max = Math.max(...s.in_amt.map(log), ...s.out_amt.map(log), 1);
+  const g = svg(id, W, H);
+  if (hl) el("rect", { x: L + hl[0] * bw, y: T, width: hl[1] * bw, height: H - T - B, fill: "var(--hl)" }, g);
+  el("line", { x1: L, x2: W - R, y1: mid, y2: mid, stroke: "var(--rule)" }, g);
+  s.in_amt.forEach((v, i) => { const h = log(v) / max * half; if (h > 0) el("rect", { x: L + i * bw + 1, y: mid - h, width: bw - 2, height: h, fill: "var(--in)", rx: 1 }, g); });
+  s.out_amt.forEach((v, i) => { const h = log(v) / max * half; if (h > 0) el("rect", { x: L + i * bw + 1, y: mid, width: bw - 2, height: h, fill: "var(--out)", rx: 1 }, g); });
+  [1, 10, 20, 30, 40, 46].forEach(w => el("text", { x: L + (w - 0.5) * bw, y: H - 6, "text-anchor": "middle" }, g).textContent = w);
+  el("text", { x: 0, y: T + 10 }, g).textContent = "in";
+  el("text", { x: 0, y: H - B - 2 }, g).textContent = "out";
+}
+
+function single(id, vals, hl) {
+  const W = 700, H = 150, L = 46, R = 8, T = 10, B = 22, n = vals.length, bw = (W - L - R) / n;
+  const max = Math.max(...vals.map(log), 1), g = svg(id, W, H);
+  el("rect", { x: L + hl[0] * bw, y: T, width: hl[1] * bw, height: H - T - B, fill: "var(--hl)" }, g);
+  el("line", { x1: L, x2: W - R, y1: H - B, y2: H - B, stroke: "var(--rule)" }, g);
+  vals.forEach((v, i) => { const h = log(v) / max * (H - T - B); if (h > 0) el("rect", { x: L + i * bw + 1, y: H - B - h, width: bw - 2, height: h, fill: "var(--out)", rx: 1, opacity: (i >= hl[0] && i < hl[0] + hl[1]) ? 1 : 0.45 }, g); });
+  [1, 10, 20, 30, 40, 46].forEach(w => el("text", { x: L + (w - 0.5) * bw, y: H - 6, "text-anchor": "middle" }, g).textContent = w);
+  [[100, "£100"], [10000, "£10k"], [1e6, "£1M"]].forEach(([v, t]) => { const y = H - B - log(v) / max * (H - T - B); if (y > T) { el("line", { x1: L, x2: W - R, y1: y, y2: y, stroke: "var(--rule)", "stroke-dasharray": "2 3" }, g); el("text", { x: L - 6, y: y + 3, "text-anchor": "end" }, g).textContent = t; } });
+}
+
+function shapelet(id, v, start) {
+  const W = 700, H = 130, L = 46, R = 8, T = 12, B = 22, n = v.length;
+  const lo = Math.min(...v), hi = Math.max(...v), g = svg(id, W, H);
+  const x = i => L + (i + 0.5) * (W - L - R) / n, y = val => T + (hi - val) / (hi - lo) * (H - T - B);
+  el("line", { x1: L, x2: W - R, y1: y(0), y2: y(0), stroke: "var(--rule)" }, g);
+  el("text", { x: L - 6, y: y(0) + 3, "text-anchor": "end" }, g).textContent = "avg";
+  el("polyline", { points: v.map((val, i) => `${x(i)},${y(val)}`).join(" "), fill: "none", stroke: "var(--out)", "stroke-width": 2.5, "stroke-linejoin": "round" }, g);
+  v.forEach((val, i) => { el("circle", { cx: x(i), cy: y(val), r: 3.5, fill: "var(--out)" }, g); el("text", { x: x(i), y: H - 6, "text-anchor": "middle" }, g).textContent = "wk " + (start + i + 1); });
+}
+
+function hbars(id, rows, fmt, max) {
+  const W = 700, rh = 30, L = 190, R = 60, H = rows.length * rh + 6, g = svg(id, W, H);
+  rows.forEach((r, i) => {
+    const y = i * rh + 4, w = (W - L - R) * r[1] / max;
+    el("text", { x: L - 10, y: y + 17, "text-anchor": "end", style: "font-size:12px;fill:var(--ink);font-family:var(--body)" }, g).textContent = r[0];
+    el("rect", { x: L, y: y + 4, width: Math.max(w, 1.5), height: rh - 10, fill: r[2] || "var(--out)", rx: 2 }, g);
+    el("text", { x: L + Math.max(w, 1.5) + 6, y: y + 17, style: "font-size:12px;fill:var(--ink)" }, g).textContent = fmt(r[1]);
+  });
+}
+
+function draw() {
+  document.getElementById("srcType").textContent = D.srcType;
+  mirror("chSrc", D.src);
+  mirror("chNrm", D.nrm);
+  const types = Object.entries(D.types).sort((a, b) => b[1] - a[1]).map(([k, v]) => [k.replace(/_/g, " "), v, "var(--in)"]);
+  hbars("chTypes", types, v => v.toLocaleString(), types[0][1]);
+  shapelet("chShp", D.shp.values, D.shp.pos);
+  single("chMatch", D.src.out_amt, [D.shp.pos, D.shp.len]);
+  document.getElementById("d2").textContent = D.shp.nearest[1].toFixed(3);
+  hbars("chReid", [["CatBoost", 0, "var(--in)"], ["MiniRocket", 0, "var(--in)"], ["Classic shapelets", 15.0], ["RDST", 85.6], ["RDST, amounts withheld", 74.9], ["Learned shapelets", 0, "var(--in)"]], v => v === 0 ? "0%" : v.toFixed(1) + "%", 100);
+  hbars("chNoise", [["No noise", 19.3], ["σ = 0.1", 10.8], ["σ = 0.25", 3.2], ["σ = 0.5", 0.2], ["σ = 1.0", 0.0]], v => v.toFixed(1) + "%", 25);
+}
+draw();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+</script>

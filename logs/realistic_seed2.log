@@ -1,0 +1,9 @@
+stc exact {'claims': 35, 'correct': 35, 'precision': 1.0, 'recall': 0.175, 'recall_given_in_pool': 0.175, 'customers_exposed': 35, 'suspicious_exposed': 11}
+stc amounts ±5% {'claims': 32, 'correct': 25, 'precision': 0.78125, 'recall': 0.125, 'recall_given_in_pool': 0.125, 'customers_exposed': 25, 'suspicious_exposed': 4}
+stc 80% of txns, ±5% {'claims': 16, 'correct': 5, 'precision': 0.3125, 'recall': 0.025, 'recall_given_in_pool': 0.025, 'customers_exposed': 5, 'suspicious_exposed': 2}
+stc 50% of txns, ±5% {'claims': 11, 'correct': 1, 'precision': 0.09090909090909091, 'recall': 0.005, 'recall_given_in_pool': 0.005, 'customers_exposed': 1, 'suspicious_exposed': 1}
+rdst exact {'claims': 270, 'correct': 259, 'precision': 0.9592592592592593, 'recall': 0.8633333333333333, 'recall_given_in_pool': 1.0, 'customers_exposed': 255, 'suspicious_exposed': 53}
+rdst amounts ±5% {'claims': 243, 'correct': 234, 'precision': 0.9629629629629629, 'recall': 0.78, 'recall_given_in_pool': 0.9034749034749034, 'customers_exposed': 230, 'suspicious_exposed': 52}
+rdst 80% of txns, ±5% {'claims': 83, 'correct': 73, 'precision': 0.8795180722891566, 'recall': 0.24333333333333335, 'recall_given_in_pool': 0.28185328185328185, 'customers_exposed': 73, 'suspicious_exposed': 20}
+rdst 50% of txns, ±5% {'claims': 32, 'correct': 11, 'precision': 0.34375, 'recall': 0.03666666666666667, 'recall_given_in_pool': 0.04247104247104247, 'customers_exposed': 11, 'suspicious_exposed': 2}
+rdst_normonly exact {'claims': 255, 'correct': 232, 'precision': 0.9098039215686274, 'recall': 0.7733333333333333, 'recall_given_in_pool': 1.0, 'customers_exposed': 232, 'suspicious_exposed': 58}

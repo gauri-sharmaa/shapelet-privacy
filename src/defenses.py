@@ -14,6 +14,8 @@ import pickle
 import numpy as np
 import torch
 import torch.nn as nn
+import os as _os
+torch.set_num_threads(int(_os.environ.get("TORCH_THREADS", "2")))
 from numpy.lib.stride_tricks import sliding_window_view
 from common import load, min_dists, znorm, det_metrics, mia_metrics, reid_metrics
 from shapelet_attack import fit_detector
@@ -88,6 +90,10 @@ def train_learned(X, y, tr, seed, epochs=30, per=8, lengths=(4, 8, 12)):
 
 
 def main(args):
+    import os
+    if "amlworld" in os.environ.get("DATA_NPZ", "") and args.seed > 0:
+        print("skipped: defenses on AMLworld run for seed 0 only")
+        return
     d, X, y, tr, te = load(seed=args.seed)
     pk = pickle.load(open(f"results/stc_seed{args.seed}.pkl", "rb"))
     shp = [(s[3], np.asarray(s[6], dtype=np.float32)) for s in pk["shapelets"]]
