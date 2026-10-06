@@ -128,6 +128,22 @@ open("paper/tables.tex", "a").write("\n".join(t2 + t3) + "\n")
 
 probe = load("learned_probe_seed*.json")
 
+if probe:
+    P = probe[0]
+    t4 = [r"""\begin{table}[t]
+\caption{Pushing learned shapelets to memorise (SAML-D, seed 0). Nearest-is-member: share of shapelets whose nearest account is a training member, vs.\ the members' share of the pool (chance). Claims: confident re-identifications ($d_2 \geq 2 d_1$).}
+\label{tab:probe}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lccc}
+\toprule
+Training & PR-AUC & Nearest-is-member (chance) & Claims \\
+\midrule"""]
+    for k, v in P.items():
+        t4.append(f"{k} & {v['detection']['pr_auc']:.3f} & {100*v['nearest_is_member']:.0f}\\% ({100*v['member_base_rate']:.0f}\\%) & {v['confident_claims']} \\\\")
+    t4.append(r"\bottomrule\end{tabular}\end{table}")
+    open("paper/tables.tex", "a").write("\n".join(t4) + "\n")
+
 # Macros used in the text.
 def mean(v, f=1):
     v = [x for x in v if x is not None]

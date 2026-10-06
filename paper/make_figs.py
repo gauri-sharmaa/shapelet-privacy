@@ -34,3 +34,21 @@ ax.set_ylim(0.86, 0.995)
 ax.set_xlabel("top-1 re-identification (%)"); ax.set_ylabel("PR-AUC")
 fig.tight_layout(); fig.savefig("paper/fig_tradeoff.pdf")
 print("figs ok")
+
+# Realistic adversary: correct re-identifications vs adversary's view (all accounts, ratio 2)
+R = [json.load(open(f)) for f in sorted(glob.glob("results/realistic_seed*.json"))]
+views = ["exact", "amounts ±5%", "80% of txns, ±5%", "50% of txns, ±5%"]
+labels = ["exact", "±5%", "80%\n+±5%", "50%\n+±5%"]
+fig, axs = plt.subplots(1, 2, figsize=(3.3, 2.0))
+for m, lab, col, mk in [("rdst", "RDST", "#c0392b", "o"), ("rdst_normonly", "RDST, no stats", "#e67e22", "s"), ("stc", "shapelet transform", "#1f5fa8", "^")]:
+    c = [np.mean([r[m][f"{v}|pool=1.0|ratio=2.0"]["customers_exposed"] for r in R if r[m]]) for v in views]
+    p = [100 * np.mean([r[m][f"{v}|pool=1.0|ratio=2.0"]["precision"] for r in R if r[m]]) for v in views]
+    axs[0].plot(range(4), c, marker=mk, ms=3, color=col, label=lab)
+    axs[1].plot(range(4), p, marker=mk, ms=3, color=col)
+for a, yl in zip(axs, ["customers re-identified", "precision (%)"]):
+    a.set_xticks(range(4)); a.set_xticklabels(labels, fontsize=6); a.set_ylabel(yl, fontsize=7)
+axs[1].set_ylim(0, 105)
+axs[1].legend(*axs[0].get_legend_handles_labels(), frameon=False, fontsize=5.5, loc="lower left")
+for a in axs: a.set_xlabel("adversary's view (txns seen)", fontsize=6)
+fig.tight_layout(); fig.savefig("paper/fig_real.pdf")
+print("fig_real ok")

@@ -1,0 +1,27 @@
+STC detection {'pr_auc': 0.42887904866184307, 'roc_auc': 0.6783461682367423, 'recall@1%fpr': 0.06823609689525759} fit 21s, 200 shapelets
+{
+ "reid": {
+  "top1": 0.06,
+  "top10": 0.1,
+  "unique_match": 0.055,
+  "median_rank": 8850.0,
+  "n_candidates": 23409
+ },
+ "mia": {
+  "auc": 0.5000678964799673,
+  "tpr@0.1%fpr": 0.001000174718275457,
+  "tpr@1%fpr": 0.01000174718275457
+ },
+ "n_shapelets": 200,
+ "n_source_accounts": 198,
+ "detection": {
+  "pr_auc": 0.42887904866184307,
+  "roc_auc": 0.6783461682367423,
+  "recall@1%fpr": 0.06823609689525759
+ },
+ "fit_s": 21.492072582244873,
+ "source_label_counts": {
+  "suspicious": 60,
+  "normal": 140
+ }
+}

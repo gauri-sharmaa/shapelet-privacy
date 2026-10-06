@@ -1,0 +1,29 @@
+RDST detection {'detection': {'pr_auc': 0.5391988177562107, 'roc_auc': 0.7700763367030642, 'recall@1%fpr': 0.09723643807574207}, 'fit_s': 27.569724082946777, 'n_shapelets': 1000}
+{
+ "detection": {
+  "pr_auc": 0.5391988177562107,
+  "roc_auc": 0.7700763367030642,
+  "recall@1%fpr": 0.09723643807574207
+ },
+ "fit_s": 27.569724082946777,
+ "n_shapelets": 1000,
+ "reid": {
+  "frac_exact_in_some_member": 0.999,
+  "frac_unique_customer": 0.4,
+  "frac_unique_among_nonzero": 0.5115089514066496,
+  "n_distinct_customers_singled_out": 391,
+  "n_singled_out_suspicious": 114,
+  "frac_singled_out_are_members": 1.0,
+  "median_matches": 77.0,
+  "n_candidates": 23409
+ },
+ "attribute": {
+  "median_nonzero_cells_revealed_per_unique_shapelet": 55.0,
+  "median_max_weekly_amount_revealed": 6.641244237120693
+ },
+ "mia": {
+  "auc": 0.497422207561543,
+  "tpr@0.1%fpr": 0.0009849376205653176,
+  "tpr@1%fpr": 0.009849376205653177
+ }
+}

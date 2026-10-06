@@ -47,7 +47,7 @@ Amounts $\pm$5\% & 227 & 96\% & 115 & 86\% \\
 50\% of txns, $\pm$5\% & 10 & 27\% & 5 & 17\% \\
 \bottomrule\end{tabular}\end{table}
 \begin{table}[t]
-\caption{Second dataset: AMLworld HI-Small (23,409 activity-matched accounts, 6-hour bins; mean over 1 seeds). MIA: standard membership-inference AUC. Re-ID: share of shapelets matching only their source; Cust.: customers singled out per model.}
+\caption{Second dataset: AMLworld HI-Small (23,409 activity-matched accounts, 6-hour bins; mean over 3 seeds). MIA: standard membership-inference AUC. Re-ID: share of shapelets matching only their source; Cust.: customers singled out per model.}
 \label{tab:aml}
 \small\setlength{\tabcolsep}{3pt}
 \centering
@@ -55,8 +55,24 @@ Amounts $\pm$5\% & 227 & 96\% & 115 & 86\% \\
 \toprule
 Model & PR-AUC & MIA AUC & Re-ID (\%) & Cust. \\
 \midrule
-CatBoost & 0.624 & 0.623 & n/a & n/a \\
-MiniRocket & 0.479 & 0.587 & n/a & n/a \\
-Shapelet transform & 0.389 & 0.497 & 5.0 & -- \\
-RDST & 0.571 & 0.505 & 62.9 & 606 \\
+CatBoost & 0.619\,$\pm$\,0.004 & 0.625\,$\pm$\,0.004 & n/a & n/a \\
+MiniRocket & 0.475\,$\pm$\,0.003 & 0.586\,$\pm$\,0.003 & n/a & n/a \\
+Shapelet transform & 0.408\,$\pm$\,0.016 & 0.499\,$\pm$\,0.002 & 6.0\,$\pm$\,1.1 & -- \\
+RDST & 0.571\,$\pm$\,0.001 & 0.507\,$\pm$\,0.002 & 64.5\,$\pm$\,1.2 & 621\,$\pm$\,10 \\
+RDST, norm.-only, no stats & 0.546\,$\pm$\,0.005 & 0.498\,$\pm$\,0.002 & 40.4\,$\pm$\,1.7 & 391\,$\pm$\,14 \\
+Learned shapelets & 0.389 & 0.500 & 0.0 & 0 \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[t]
+\caption{Pushing learned shapelets to memorise (SAML-D, seed 0). Nearest-is-member: share of shapelets whose nearest account is a training member, vs.\ the members' share of the pool (chance). Claims: confident re-identifications ($d_2 \geq 2 d_1$).}
+\label{tab:probe}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lccc}
+\toprule
+Training & PR-AUC & Nearest-is-member (chance) & Claims \\
+\midrule
+30 epochs, full train & 0.957 & 50\% (50\%) & 0 \\
+200 epochs, full train & 0.952 & 50\% (50\%) & 0 \\
+200 epochs, 1k train & 0.928 & 4\% (3\%) & 0 \\
+400 epochs, 300 train & 0.895 & 0\% (1\%) & 0 \\
 \bottomrule\end{tabular}\end{table}
