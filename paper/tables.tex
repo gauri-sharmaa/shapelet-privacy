@@ -31,3 +31,32 @@ $k$-anon. mean, $k{=}5$ & 0.877\,$\pm$\,0.007 & 0.3\,$\pm$\,0.2 & 13.5\,$\pm$\,0
 $k$-anon. mean, $k{=}20$ & 0.876\,$\pm$\,0.005 & 0.2\,$\pm$\,0.2 & 12.5\,$\pm$\,2.1 \\
 $k$-anon. mean, $k{=}50$ & 0.876\,$\pm$\,0.006 & 0.0\,$\pm$\,0.0 & 10.7\,$\pm$\,1.3 \\
 \bottomrule\end{tabular}\end{table}
+\begin{table}[t]
+\caption{Re-identification by a realistic adversary (SAML-D, 300 sampled RDST shapelets, mean over seeds). The adversary's copy of the data has perturbed amounts and/or misses transactions, and holds all or half of the accounts; it claims an identity only if the nearest account is at least $2\times$ closer than the runner-up. Cust.: customers correctly re-identified; Prec.: share of claims that are correct.}
+\label{tab:real}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{All accounts} & \multicolumn{2}{c}{Half of accounts} \\
+Adversary's view & Cust. & Prec. & Cust. & Prec. \\
+\midrule
+Exact copy & 251 & 94\% & 125 & 86\% \\
+Amounts $\pm$5\% & 227 & 96\% & 115 & 86\% \\
+80\% of txns, $\pm$5\% & 71 & 78\% & 36 & 62\% \\
+50\% of txns, $\pm$5\% & 10 & 27\% & 5 & 17\% \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[t]
+\caption{Second dataset: AMLworld HI-Small (23,409 activity-matched accounts, 6-hour bins; mean over 1 seeds). MIA: standard membership-inference AUC. Re-ID: share of shapelets matching only their source; Cust.: customers singled out per model.}
+\label{tab:aml}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Model & PR-AUC & MIA AUC & Re-ID (\%) & Cust. \\
+\midrule
+CatBoost & 0.624 & 0.623 & n/a & n/a \\
+MiniRocket & 0.479 & 0.587 & n/a & n/a \\
+Shapelet transform & 0.389 & 0.497 & 5.0 & -- \\
+RDST & 0.571 & 0.505 & 62.9 & 606 \\
+\bottomrule\end{tabular}\end{table}

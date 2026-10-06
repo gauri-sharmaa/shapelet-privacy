@@ -73,6 +73,61 @@ for k, lab in names.items():
 t.append(r"\bottomrule\end{tabular}\end{table}")
 open("paper/tables.tex", "w").write("\n".join(t) + "\n")
 
+
+# ---- Realistic adversary (SAML-D) ----
+real = load("realistic_seed*.json")
+def rv(model, key, field):
+    return [r[model][key][field] for r in real if model in r and key in r[model]]
+t2 = [r"""\begin{table}[t]
+\caption{Re-identification by a realistic adversary (SAML-D, 300 sampled RDST shapelets, mean over seeds). The adversary's copy of the data has perturbed amounts and/or misses transactions, and holds all or half of the accounts; it claims an identity only if the nearest account is at least $2\times$ closer than the runner-up. Cust.: customers correctly re-identified; Prec.: share of claims that are correct.}
+\label{tab:real}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{All accounts} & \multicolumn{2}{c}{Half of accounts} \\
+Adversary's view & Cust. & Prec. & Cust. & Prec. \\
+\midrule"""]
+for vname, lab in [("exact", "Exact copy"), ("amounts ±5%", r"Amounts $\pm$5\%"),
+                   ("80% of txns, ±5%", r"80\% of txns, $\pm$5\%"), ("50% of txns, ±5%", r"50\% of txns, $\pm$5\%")]:
+    row = [lab]
+    for pf in ["1.0", "0.5"]:
+        k = f"{vname}|pool={pf}|ratio=2.0"
+        row += [f"{np.mean(rv('rdst', k, 'customers_exposed')):.0f}", f"{100*np.mean(rv('rdst', k, 'precision')):.0f}\\%"]
+    t2.append(" & ".join(row) + r" \\")
+t2.append(r"\bottomrule\end{tabular}\end{table}")
+
+# ---- Second dataset (AMLworld) ----
+A = "runs/amlworld/results/"
+def la(p):
+    return [json.load(open(f)) for f in sorted(glob.glob(A + p))]
+ab, ast, ard, arn = la("baselines_seed*.json"), la("stc_attack_seed*.json"), la("rdst_attack_seed*.json"), la("rdst_normonly_attack_seed*.json")
+adf = la("defenses_seed*.json")
+t3 = [r"""\begin{table}[t]
+\caption{Second dataset: AMLworld HI-Small (23,409 activity-matched accounts, 6-hour bins; mean over %d seeds). MIA: standard membership-inference AUC. Re-ID: share of shapelets matching only their source; Cust.: customers singled out per model.}
+\label{tab:aml}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Model & PR-AUC & MIA AUC & Re-ID (\%%) & Cust. \\
+\midrule""" % len(ard)]
+for n, lab in [("catboost", "CatBoost"), ("minirocket", "MiniRocket")]:
+    t3.append(f"{lab} & {ms([g(b, n, 'pr_auc') for b in ab])} & {ms([g(b, n, 'mia_conf', 'auc') for b in ab])} & n/a & n/a \\\\")
+t3.append(f"Shapelet transform & {ms([g(r, 'detection', 'pr_auc') for r in ast])} & {ms([g(r, 'mia', 'auc') for r in ast])} & "
+          f"{ms([g(r, 'reid', 'unique_match') for r in ast], True)} & -- \\\\")
+t3.append(f"RDST & {ms([g(r, 'detection', 'pr_auc') for r in ard])} & {ms([g(r, 'mia', 'auc') for r in ard])} & "
+          f"{ms([g(r, 'reid', 'frac_unique_customer') for r in ard], True)} & {ms([g(r, 'reid', 'n_distinct_customers_singled_out') for r in ard], dig=0)} \\\\")
+if arn:
+    t3.append(f"RDST, norm.-only, no stats & {ms([g(r, 'detection', 'pr_auc') for r in arn])} & {ms([g(r, 'mia', 'auc') for r in arn])} & "
+              f"{ms([g(r, 'reid', 'frac_unique_customer') for r in arn], True)} & {ms([g(r, 'reid', 'n_distinct_customers_singled_out') for r in arn], dig=0)} \\\\")
+if adf and "learned" in adf[0]:
+    t3.append(f"Learned shapelets & {ms([g(r, 'learned', 'detection', 'pr_auc') for r in adf])} & {ms([g(r, 'learned', 'mia', 'auc') for r in adf])} & 0.0 & 0 \\\\")
+t3.append(r"\bottomrule\end{tabular}\end{table}")
+open("paper/tables.tex", "a").write("\n".join(t2 + t3) + "\n")
+
+probe = load("learned_probe_seed*.json")
+
 # Macros used in the text.
 def mean(v, f=1):
     v = [x for x in v if x is not None]
@@ -96,6 +151,23 @@ N = {
     "stcPR": f"{mean([g(r, 'detection', 'pr_auc') for r in stc]):.3f}",
     "cbPR": f"{mean([g(b, 'catboost', 'pr_auc') for b in base]):.3f}",
     "nSeeds": str(len(base)),
+    "realCust": f"{np.mean(rv('rdst', 'amounts ±5%|pool=1.0|ratio=2.0', 'customers_exposed')):.0f}",
+    "realPrec": f"{100*np.mean(rv('rdst', 'amounts ±5%|pool=1.0|ratio=2.0', 'precision')):.0f}",
+    "realSusp": f"{np.mean(rv('rdst', 'amounts ±5%|pool=1.0|ratio=2.0', 'suspicious_exposed')):.0f}",
+    "realEightyCust": f"{np.mean(rv('rdst', '80% of txns, ±5%|pool=1.0|ratio=2.0', 'customers_exposed')):.0f}",
+    "realEightyPrec": f"{100*np.mean(rv('rdst', '80% of txns, ±5%|pool=1.0|ratio=2.0', 'precision')):.0f}",
+    "realHalfPrec": f"{100*np.mean(rv('rdst', '50% of txns, ±5%|pool=1.0|ratio=2.0', 'precision')):.0f}",
+    "realNormCust": f"{np.mean(rv('rdst_normonly', 'amounts ±5%|pool=1.0|ratio=2.0', 'customers_exposed')):.0f}",
+    "realNormPrec": f"{100*np.mean(rv('rdst_normonly', 'amounts ±5%|pool=1.0|ratio=2.0', 'precision')):.0f}",
+    "amlRdstUnique": f"{mean([g(r, 'reid', 'frac_unique_customer') for r in ard], 100):.0f}",
+    "amlRdstCust": f"{mean([g(r, 'reid', 'n_distinct_customers_singled_out') for r in ard]):.0f}",
+    "amlRdstSusp": f"{mean([g(r, 'reid', 'n_singled_out_suspicious') for r in ard]):.0f}",
+    "amlRdstPR": f"{mean([g(r, 'detection', 'pr_auc') for r in ard]):.2f}",
+    "amlCbPR": f"{mean([g(b, 'catboost', 'pr_auc') for b in ab]):.2f}",
+    "amlCbMIA": f"{mean([g(b, 'catboost', 'mia_conf', 'auc') for b in ab]):.2f}",
+    "amlStcUnique": f"{mean([g(r, 'reid', 'unique_match') for r in ast], 100):.0f}",
+    "probeNear": f"{100*mean([g(p, k, 'nearest_is_member') for p in probe for k in p]):.0f}" if probe else "--",
+    "probeConf": f"{max([g(p, k, 'confident_claims_on_members') for p in probe for k in p]):.0f}" if probe else "--",
 }
 open("paper/numbers.tex", "w").write("\n".join(f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in N.items()) + "\n")
 print(N)
