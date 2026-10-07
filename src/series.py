@@ -4,8 +4,11 @@ Input: a normalised transaction frame with columns
   t (int time bin), snd, rcv (account ids), amount (float), xb (bool: crosses border/bank), cash (bool), laund (0/1)
 Channels: out_amt, in_amt, out_cnt, in_cnt, xborder_out_amt, cash_amt  (log1p-scaled)
 """
+import os
 import numpy as np
 import pandas as pd
+
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CHANNELS = ["out_amt", "in_amt", "out_cnt", "in_cnt", "xborder_out_amt", "cash_amt"]
 
@@ -44,7 +47,7 @@ def build(tx, accts, n_bins, keep_p=1.0, amt_noise=0.0, round_to=0.0, seed=0):
     return np.log1p(X).astype(np.float32)
 
 
-def samld_tx(path="data/SAML-D.csv"):
+def samld_tx(path=os.path.join(_ROOT, "data/SAML-D.csv")):
     df = pd.read_csv(path, usecols=["Date", "Sender_account", "Receiver_account", "Amount", "Sender_bank_location",
                                     "Receiver_bank_location", "Payment_type", "Is_laundering"])
     t = ((pd.to_datetime(df.Date) - pd.Timestamp("2022-10-07")).dt.days // 7).astype(int)
@@ -53,7 +56,7 @@ def samld_tx(path="data/SAML-D.csv"):
                          "cash": df.Payment_type.str.contains("Cash"), "laund": df.Is_laundering}), int(t.max() + 1)
 
 
-def amlworld_tx(path="data/HI-Small_Trans.csv", bin_hours=6, days=10):
+def amlworld_tx(path=os.path.join(_ROOT, "data/HI-Small_Trans.csv"), bin_hours=6, days=10):
     df = pd.read_csv(path)
     df.columns = ["ts", "from_bank", "from_acct", "to_bank", "to_acct", "amt_recv", "cur_recv", "amt_paid",
                   "cur_paid", "fmt", "laund"]
@@ -67,3 +70,16 @@ def amlworld_tx(path="data/HI-Small_Trans.csv", bin_hours=6, days=10):
     tx = pd.DataFrame({"t": t, "snd": snd, "rcv": rcv, "amount": df.amt_paid, "xb": df.from_bank != df.to_bank,
                        "cash": df.fmt == "Cash", "laund": df.laund})
     return tx[keep].reset_index(drop=True), n_bins
+
+
+def berka_tx(path=os.path.join(_ROOT, "data/berka/trans.csv")):
+    tx = pd.read_csv(path, sep=";", low_memory=False)
+    tx = tx[tx.k_symbol.fillna("").str.strip() != "UVER"]
+    date = pd.to_datetime(tx.date.astype(str), format="%y%m%d")
+    t = ((date.dt.year - 1993) * 12 + date.dt.month - 1).astype(int)
+    inc = tx.type == "PRIJEM"
+    acct = tx.account_id.astype(str)
+    return pd.DataFrame({"t": t, "snd": np.where(inc, "ext", acct), "rcv": np.where(inc, acct, "ext"),
+                         "amount": tx.amount.astype(float),
+                         "xb": tx.operation.isin(["PREVOD NA UCET", "PREVOD Z UCTU"]).to_numpy(),
+                         "cash": tx.operation.isin(["VYBER", "VKLAD"]).to_numpy(), "laund": 0}), 72

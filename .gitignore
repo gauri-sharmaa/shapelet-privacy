@@ -1,6 +1,6 @@
-data/
 *.pkl
 __pycache__/
+data/
 paper/*.aux
 paper/*.log
 runs/*/results/*.pkl

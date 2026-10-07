@@ -17,7 +17,8 @@ import numpy as np
 from aeon.transformations.collection.shapelet_based import RandomDilatedShapeletTransform
 from common import load, min_dists
 from rdst_attack import raw_windows, match
-from series import build, samld_tx
+import os
+from series import build, samld_tx, amlworld_tx, berka_tx
 
 VIEWS = {  # name: (keep_p, amt_noise)
     "exact": (1.0, 0.0),
@@ -50,7 +51,8 @@ def decide(D, src, y_all, pool_frac, ratio, rng):
 
 def main(args):
     d, X, y, tr, te = load(seed=args.seed)
-    tx, nb = samld_tx()
+    dp = os.environ.get("DATA_NPZ", "")
+    tx, nb = berka_tx() if "berka" in dp else amlworld_tx() if "amlworld" in dp else samld_tx()
     views = {name: (X if kp == 1 and nz == 0 else build(tx, d["acct"], nb, kp, nz, seed=100 + args.seed))
              for name, (kp, nz) in VIEWS.items()}
     rng_sel = np.random.default_rng(args.seed)

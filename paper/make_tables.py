@@ -35,7 +35,7 @@ rdn, dfn, sw = load("rdst_normonly_attack_seed*.json"), load("defenses_seed*.jso
 
 t = []
 t.append(r"""\begin{table}[t]
-\caption{Detection on held-out accounts and leakage of the released model (mean $\pm$ std over %d seeds). Re-ID: share of released shapelets that match \emph{only} their source customer among %s candidate accounts.}
+\caption{SAML-D: detection on held-out accounts and leakage of the released model (mean $\pm$ std over %d seeds). Re-ID: share of released shapelets that match \emph{only} their source customer among %s candidate accounts.}
 \label{tab:main}
 \small\setlength{\tabcolsep}{3pt}
 \resizebox{\columnwidth}{!}{%%
@@ -97,32 +97,34 @@ for vname, lab in [("exact", "Exact copy"), ("amounts ±5%", r"Amounts $\pm$5\%"
     t2.append(" & ".join(row) + r" \\")
 t2.append(r"\bottomrule\end{tabular}\end{table}")
 
-# ---- Second dataset (AMLworld) ----
-A = "runs/amlworld/results/"
-def la(p):
-    return [json.load(open(f)) for f in sorted(glob.glob(A + p))]
-ab, ast, ard, arn = la("baselines_seed*.json"), la("stc_attack_seed*.json"), la("rdst_attack_seed*.json"), la("rdst_normonly_attack_seed*.json")
-adf = la("defenses_seed*.json")
+# ---- Second benchmark and real data (AMLworld, Berka) ----
+def la(ds, p):
+    return [json.load(open(f)) for f in sorted(glob.glob(f"runs/{ds}/results/" + p))]
+ab, ast, ard, arn, adf = (la("amlworld", p) for p in ["baselines_seed*.json", "stc_attack_seed*.json", "rdst_attack_seed*.json", "rdst_normonly_attack_seed*.json", "defenses_seed*.json"])
+bb, bst, brd, brn, bdf = (la("berka", p) for p in ["baselines_seed*.json", "stc_attack_seed*.json", "rdst_attack_seed*.json", "rdst_normonly_attack_seed*.json", "defenses_seed*.json"])
+breal = la("berka", "realistic_seed*.json")
 t3 = [r"""\begin{table}[t]
-\caption{Second dataset: AMLworld HI-Small (23,409 activity-matched accounts, 6-hour bins; mean over %d seeds). MIA: standard membership-inference AUC. Re-ID: share of shapelets matching only their source; Cust.: customers singled out per model.}
+\caption{AMLworld HI-Small (23,409 accounts, 6-hour bins) and Berka (4,500 real accounts, monthly bins, proxy task); mean over seeds. MIA: aggregate membership AUC. Re-ID: share of shapelets matching only their source; Cust.: customers singled out per model.}
 \label{tab:aml}
-\small\setlength{\tabcolsep}{3pt}
+\small\setlength{\tabcolsep}{2.5pt}
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Model & PR-AUC & MIA AUC & Re-ID (\%%) & Cust. \\
-\midrule""" % len(ard)]
-for n, lab in [("catboost", "CatBoost"), ("minirocket", "MiniRocket")]:
-    t3.append(f"{lab} & {ms([g(b, n, 'pr_auc') for b in ab])} & {ms([g(b, n, 'mia_conf', 'auc') for b in ab])} & n/a & n/a \\\\")
-t3.append(f"Shapelet transform & {ms([g(r, 'detection', 'pr_auc') for r in ast])} & {ms([g(r, 'mia', 'auc') for r in ast])} & "
-          f"{ms([g(r, 'reid', 'unique_match') for r in ast], True)} & -- \\\\")
-t3.append(f"RDST & {ms([g(r, 'detection', 'pr_auc') for r in ard])} & {ms([g(r, 'mia', 'auc') for r in ard])} & "
-          f"{ms([g(r, 'reid', 'frac_unique_customer') for r in ard], True)} & {ms([g(r, 'reid', 'n_distinct_customers_singled_out') for r in ard], dig=0)} \\\\")
-if arn:
-    t3.append(f"RDST, norm.-only, no stats & {ms([g(r, 'detection', 'pr_auc') for r in arn])} & {ms([g(r, 'mia', 'auc') for r in arn])} & "
-              f"{ms([g(r, 'reid', 'frac_unique_customer') for r in arn], True)} & {ms([g(r, 'reid', 'n_distinct_customers_singled_out') for r in arn], dig=0)} \\\\")
-if adf and "learned" in adf[0]:
-    t3.append(f"Learned shapelets & {ms([g(r, 'learned', 'detection', 'pr_auc') for r in adf])} & {ms([g(r, 'learned', 'mia', 'auc') for r in adf])} & 0.0 & 0 \\\\")
+Model & PR-AUC & MIA AUC & Re-ID (\%) & Cust. \\
+\midrule"""]
+for title, B, S, Rd, Rn, Df in [("AMLworld", ab, ast, ard, arn, adf), ("Berka (real)", bb, bst, brd, brn, bdf)]:
+    t3.append(r"\multicolumn{5}{l}{\emph{" + title + r"}} \\")
+    for n, lab in [("catboost", "CatBoost"), ("minirocket", "MiniRocket")]:
+        t3.append(f"{lab} & {ms([g(b, n, 'pr_auc') for b in B])} & {ms([g(b, n, 'mia_conf', 'auc') for b in B])} & n/a & n/a \\\\")
+    t3.append(f"Shapelet transform & {ms([g(r, 'detection', 'pr_auc') for r in S])} & {ms([g(r, 'mia', 'auc') for r in S])} & "
+              f"{ms([g(r, 'reid', 'unique_match') for r in S], True)} & -- \\\\")
+    t3.append(f"RDST & {ms([g(r, 'detection', 'pr_auc') for r in Rd])} & {ms([g(r, 'mia', 'auc') for r in Rd])} & "
+              f"{ms([g(r, 'reid', 'frac_unique_customer') for r in Rd], True)} & {ms([g(r, 'reid', 'n_distinct_customers_singled_out') for r in Rd], dig=0)} \\\\")
+    if Rn:
+        t3.append(f"RDST, norm.-only & {ms([g(r, 'detection', 'pr_auc') for r in Rn])} & {ms([g(r, 'mia', 'auc') for r in Rn])} & "
+                  f"{ms([g(r, 'reid', 'frac_unique_customer') for r in Rn], True)} & {ms([g(r, 'reid', 'n_distinct_customers_singled_out') for r in Rn], dig=0)} \\\\")
+    if Df and "learned" in Df[0]:
+        t3.append(f"Learned shapelets & {ms([g(r, 'learned', 'detection', 'pr_auc') for r in Df])} & {ms([g(r, 'learned', 'mia', 'auc') for r in Df])} & 0.0 & 0 \\\\")
 t3.append(r"\bottomrule\end{tabular}\end{table}")
 open("paper/tables.tex", "a").write("\n".join(t2 + t3) + "\n")
 
@@ -185,5 +187,28 @@ N = {
     "probeNear": f"{100*mean([g(p, k, 'nearest_is_member') for p in probe for k in p]):.0f}" if probe else "--",
     "probeConf": f"{max([g(p, k, 'confident_claims_on_members') for p in probe for k in p]):.0f}" if probe else "--",
 }
+ext = load("rdst_extra_seed*.json")
+scale = [e["scale"] for e in ext if "scale" in e]
+if scale:
+    keys = sorted(scale[0], key=int)
+    N.update({"scaleN": f"{int(keys[-1]):,}", "scaleExtra": f"{int(keys[-1]) - int(keys[0]):,}",
+              "scaleKeep": f"{100 * scale[0][keys[-1]]:.0f}"})
+if ext:
+    N.update({"auditTpr": f"{100 * mean([e['audit']['tpr@0.1%fpr'] for e in ext]):.1f}",
+              "auditMembers": f"{mean([e['audit']['members_singled_out'] for e in ext]):.0f}",
+              "auditNonmembers": f"{mean([e['audit']['nonmembers_singled_out'] for e in ext]):.0f}"})
+def brv(model, key, field):
+    return [r[model][key][field] for r in breal if model in r and key in r[model]]
+N.update({
+    "berkaUnique": f"{mean([g(r, 'reid', 'frac_unique_customer') for r in brd], 100):.0f}",
+    "berkaCust": f"{mean([g(r, 'reid', 'n_distinct_customers_singled_out') for r in brd]):.0f}",
+    "berkaStcUnique": f"{mean([g(r, 'reid', 'unique_match') for r in bst], 100):.0f}",
+    "berkaRdstPR": f"{mean([g(r, 'detection', 'pr_auc') for r in brd]):.2f}",
+    "berkaLearnPR": f"{mean([g(r, 'learned', 'detection', 'pr_auc') for r in bdf]):.2f}",
+    "berkaRealCust": f"{mean(brv('rdst', 'amounts ±5%|pool=1.0|ratio=2.0', 'customers_exposed')):.0f}" if breal else "--",
+    "berkaRealPrec": f"{mean(brv('rdst', 'amounts ±5%|pool=1.0|ratio=2.0', 'precision'), 100):.0f}" if breal else "--",
+})
+for k in ["scaleN", "scaleExtra", "scaleKeep", "auditTpr", "auditMembers", "auditNonmembers"]:
+    N.setdefault(k, "--")
 open("paper/numbers.tex", "w").write("\n".join(f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in N.items()) + "\n")
 print(N)

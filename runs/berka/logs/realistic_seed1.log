@@ -1,0 +1,12 @@
+stc exact {'claims': 100, 'correct': 100, 'precision': 1.0, 'recall': 0.5, 'recall_given_in_pool': 0.5, 'customers_exposed': 96, 'suspicious_exposed': 21}
+stc amounts ±5% {'claims': 55, 'correct': 53, 'precision': 0.9636363636363636, 'recall': 0.265, 'recall_given_in_pool': 0.265, 'customers_exposed': 51, 'suspicious_exposed': 14}
+stc 80% of txns, ±5% {'claims': 12, 'correct': 2, 'precision': 0.16666666666666666, 'recall': 0.01, 'recall_given_in_pool': 0.01, 'customers_exposed': 2, 'suspicious_exposed': 2}
+stc 50% of txns, ±5% {'claims': 7, 'correct': 1, 'precision': 0.14285714285714285, 'recall': 0.005, 'recall_given_in_pool': 0.005, 'customers_exposed': 1, 'suspicious_exposed': 0}
+rdst exact {'claims': 231, 'correct': 226, 'precision': 0.9783549783549783, 'recall': 0.7533333333333333, 'recall_given_in_pool': 1.0, 'customers_exposed': 213, 'suspicious_exposed': 26}
+rdst amounts ±5% {'claims': 218, 'correct': 215, 'precision': 0.9862385321100917, 'recall': 0.7166666666666667, 'recall_given_in_pool': 0.9513274336283186, 'customers_exposed': 202, 'suspicious_exposed': 24}
+rdst 80% of txns, ±5% {'claims': 22, 'correct': 12, 'precision': 0.5454545454545454, 'recall': 0.04, 'recall_given_in_pool': 0.05309734513274336, 'customers_exposed': 12, 'suspicious_exposed': 2}
+rdst 50% of txns, ±5% {'claims': 6, 'correct': 1, 'precision': 0.16666666666666666, 'recall': 0.0033333333333333335, 'recall_given_in_pool': 0.004424778761061947, 'customers_exposed': 1, 'suspicious_exposed': 0}
+rdst_normonly exact {'claims': 147, 'correct': 137, 'precision': 0.9319727891156463, 'recall': 0.45666666666666667, 'recall_given_in_pool': 1.0, 'customers_exposed': 133, 'suspicious_exposed': 20}
+rdst_normonly amounts ±5% {'claims': 118, 'correct': 114, 'precision': 0.9661016949152542, 'recall': 0.38, 'recall_given_in_pool': 0.8321167883211679, 'customers_exposed': 111, 'suspicious_exposed': 15}
+rdst_normonly 80% of txns, ±5% {'claims': 9, 'correct': 7, 'precision': 0.7777777777777778, 'recall': 0.023333333333333334, 'recall_given_in_pool': 0.051094890510948905, 'customers_exposed': 7, 'suspicious_exposed': 2}
+rdst_normonly 50% of txns, ±5% {'claims': 5, 'correct': 0, 'precision': 0.0, 'recall': 0.0, 'recall_given_in_pool': 0.0, 'customers_exposed': 0, 'suspicious_exposed': 0}

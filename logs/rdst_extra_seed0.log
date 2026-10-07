@@ -1,0 +1,2 @@
+audit {'aggregate_auc': 0.5212110733624493, 'tpr@0fpr': 0.053629867094102716, 'tpr@0.1%fpr': 0.053629867094102716, 'tpr@1%fpr': 0.053629867094102716, 'members_singled_out': 803, 'nonmembers_singled_out': 0}
+scale (share of initially-unique shapelets still unique) {'29946': 1.0, '99946': 1.0, '249946': 1.0}

@@ -1,0 +1,1 @@
+audit {'aggregate_auc': 0.5213243340673557, 'tpr@0fpr': 0.055833834234956255, 'tpr@0.1%fpr': 0.055833834234956255, 'tpr@1%fpr': 0.055833834234956255, 'members_singled_out': 836, 'nonmembers_singled_out': 0}

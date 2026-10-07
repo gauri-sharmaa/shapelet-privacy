@@ -25,7 +25,16 @@ lab = {"none": "as trained", "noise-0.1": "σ=.1", "noise-0.25": "σ=.25", "nois
 for k, l in lab.items():
     x = np.mean([r[k]["reid"]["top1"] for r in dfn]) * 100; y = np.mean([r[k]["detection"]["pr_auc"] for r in dfn])
     c = "#c0392b" if k == "none" else ("#1f5fa8" if k.startswith("noise") else "#7d3c98")
-    ax.scatter(x, y, s=12, color=c); ax.annotate(l, (x, y), fontsize=6.5, xytext=(2, 2), textcoords="offset points")
+    ax.scatter(x, y, s=12, color=c)
+    if k.startswith("kanon"):
+        if k == "kanon-20":
+            ax.annotate("k-anon. (k=5,20,50)", (x, y), fontsize=6.5, xytext=(-30, 8), textcoords="offset points")
+    elif k in ("noise-0.5", "noise-1.0"):
+        if k == "noise-0.5":
+            ax.annotate("noise σ≥.5", (x, y), fontsize=6.5, xytext=(2, 8), textcoords="offset points")
+    else:
+        off = (2, -10) if k == "noise-0.1" else (2, 2)
+        ax.annotate(l, (x, y), fontsize=6.5, xytext=off, textcoords="offset points")
 ly = np.mean([r["learned"]["detection"]["pr_auc"] for r in dfn])
 ax.scatter(0, ly, marker="*", s=40, color="#27ae60"); ax.annotate("learned", (0, ly), fontsize=6.5, xytext=(3, -6), textcoords="offset points")
 cb = np.mean([b["catboost"]["pr_auc"] for b in base]); ax.axhline(cb, ls="--", lw=0.7, color="gray")
