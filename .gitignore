@@ -4,3 +4,7 @@ data/
 paper/*.aux
 paper/*.log
 runs/*/results/*.pkl
+catboost_info/
+**/catboost_info/
+runs/berka/logs/lira.log
+runs/berka/results/lira.json
