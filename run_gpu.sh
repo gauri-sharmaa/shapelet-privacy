@@ -16,4 +16,7 @@ for ds in samld amlworld berka; do
     [ -f results/dp_shapelets_seed$s.json ] || { echo "[$ds seed $s] DP-SGD shapelets"; python3 $ROOT/src/dp_shapelets.py --seed $s --dataset $ds > logs/dp_shapelets_seed$s.log 2>&1 || tail -5 logs/dp_shapelets_seed$s.log; }
   done
 done
+# LiRA membership audit on Berka (CPU-bound; runs here so it is not lost to session restarts)
+cd $ROOT/runs/berka && export DATA_NPZ=$ROOT/data/berka_monthly.npz
+[ -f results/lira_final.json ] || { echo "[berka] LiRA audit (32 shadow models)"; python3 $ROOT/src/lira.py --shadows 32 --k 300 > logs/lira.log 2>&1 && cp results/lira.json results/lira_final.json || tail -5 logs/lira.log; }
 cd $ROOT && echo "ALL DONE. Now push results:  git add -f results/*.json runs/*/results/*.json && git commit -m 'GPU results' && git push"

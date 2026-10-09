@@ -15,5 +15,5 @@ module load anaconda3
 source ~/scratch/sp-venv/bin/activate
 nvidia-smi --query-gpu=name,memory.total --format=csv
 ./run_gpu.sh
-git add -f results/*.json runs/*/results/*.json logs/gpu-*.out 2>/dev/null
+git add -f results/*.json runs/*/results/*.json runs/*/logs/*.log logs/gpu-*.out 2>/dev/null
 git commit -qm "GPU results (job $SLURM_JOB_ID)" && git push || echo "Push failed: push manually with  git push"

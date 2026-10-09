@@ -60,12 +60,20 @@ def main(a):
     rng = np.random.default_rng(123)
     ins = {"rdst": [[] for _ in range(n)], "cb": [[] for _ in range(n)]}
     outs = {"rdst": [[] for _ in range(n)], "cb": [[] for _ in range(n)]}
+    import os
+    os.makedirs("results/lira_cache", exist_ok=True)
     for s in range(a.shadows):
         idx = rng.choice(n, size=n // 2, replace=False)
         inmask = np.zeros(n, bool)
         inmask[idx] = True
-        r, _ = rdst_score(X, y, idx, 1000 + s, a.k)
-        c = cb_score(Xf, y, idx, 1000 + s)
+        cache = f"results/lira_cache/shadow{s}_k{a.k}.npz"   # resumable: reuse finished shadows
+        if os.path.exists(cache):
+            z = np.load(cache)
+            r, c = z["r"], z["c"]
+        else:
+            r, _ = rdst_score(X, y, idx, 1000 + s, a.k)
+            c = cb_score(Xf, y, idx, 1000 + s)
+            np.savez(cache, r=r, c=c)
         for i in range(n):
             (ins if inmask[i] else outs)["rdst"][i].append(r[i])
             (ins if inmask[i] else outs)["cb"][i].append(c[i])
