@@ -1,0 +1,46 @@
+{
+  "inf": {
+    "epsilon_spent": Infinity,
+    "detection": {
+      "pr_auc": 0.9614983732883876,
+      "roc_auc": 0.9878880787928297,
+      "recall@1%fpr": 0.7139964565932675
+    },
+    "nearest_account_dist_median": 0.37659981846809387,
+    "nearest_is_member": 0.2847222222222222,
+    "member_base_rate": 0.5
+  },
+  "8.0": {
+    "epsilon_spent": 7.9954310569639455,
+    "detection": {
+      "pr_auc": 0.9462696324766874,
+      "roc_auc": 0.98113275072,
+      "recall@1%fpr": 0.6871678056188307
+    },
+    "nearest_account_dist_median": 0.43179649114608765,
+    "nearest_is_member": 0.2986111111111111,
+    "member_base_rate": 0.5
+  },
+  "4.0": {
+    "epsilon_spent": 3.996775679511469,
+    "detection": {
+      "pr_auc": 0.9450111207742959,
+      "roc_auc": 0.9804000406724345,
+      "recall@1%fpr": 0.6902050113895216
+    },
+    "nearest_account_dist_median": 0.4333265721797943,
+    "nearest_is_member": 0.3472222222222222,
+    "member_base_rate": 0.5
+  },
+  "1.0": {
+    "epsilon_spent": 0.9960355261955456,
+    "detection": {
+      "pr_auc": 0.9459627779957407,
+      "roc_auc": 0.9802625255000685,
+      "recall@1%fpr": 0.6547709440647937
+    },
+    "nearest_account_dist_median": 0.4579290449619293,
+    "nearest_is_member": 0.3194444444444444,
+    "member_base_rate": 0.5
+  }
+}

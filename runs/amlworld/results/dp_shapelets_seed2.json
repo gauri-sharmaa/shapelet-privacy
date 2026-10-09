@@ -1,0 +1,46 @@
+{
+  "inf": {
+    "epsilon_spent": Infinity,
+    "detection": {
+      "pr_auc": 0.39588691476254684,
+      "roc_auc": 0.6626937844101751,
+      "recall@1%fpr": 0.042647560559535995
+    },
+    "nearest_account_dist_median": 0.29970622062683105,
+    "nearest_is_member": 0.16666666666666666,
+    "member_base_rate": 0.49997864069375025
+  },
+  "8.0": {
+    "epsilon_spent": 7.9965467381818085,
+    "detection": {
+      "pr_auc": 0.415963933998278,
+      "roc_auc": 0.6882604088239679,
+      "recall@1%fpr": 0.052882975093824634
+    },
+    "nearest_account_dist_median": 0.4422418475151062,
+    "nearest_is_member": 0.22916666666666666,
+    "member_base_rate": 0.49997864069375025
+  },
+  "4.0": {
+    "epsilon_spent": 3.9931418034424047,
+    "detection": {
+      "pr_auc": 0.41725063564473075,
+      "roc_auc": 0.6879564611083412,
+      "recall@1%fpr": 0.05322415557830092
+    },
+    "nearest_account_dist_median": 0.4391034245491028,
+    "nearest_is_member": 0.24305555555555555,
+    "member_base_rate": 0.49997864069375025
+  },
+  "1.0": {
+    "epsilon_spent": 0.9942431518670107,
+    "detection": {
+      "pr_auc": 0.4205269569640369,
+      "roc_auc": 0.6912455630788432,
+      "recall@1%fpr": 0.05185943364039577
+    },
+    "nearest_account_dist_median": 0.43212711811065674,
+    "nearest_is_member": 0.2361111111111111,
+    "member_base_rate": 0.49997864069375025
+  }
+}

@@ -1,0 +1,35 @@
+Traceback (most recent call last):
+  File "/storage/home/hcoda1/9/gsharma80/shapelet-privacy/src/lira.py", line 97, in <module>
+    main(p.parse_args())
+  File "/storage/home/hcoda1/9/gsharma80/shapelet-privacy/src/lira.py", line 74, in main
+    r, _ = rdst_score(X, y, idx, 1000 + s, a.k)
+  File "/storage/home/hcoda1/9/gsharma80/shapelet-privacy/src/lira.py", line 22, in rdst_score
+    t = RandomDilatedShapeletTransform(max_shapelets=k, random_state=seed, n_jobs=4).fit(X[idx_train], y[idx_train])
+  File "/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/aeon/transformations/collection/base.py", line 98, in fit
+    self._fit(X=X, y=y)
+  File "/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/aeon/transformations/collection/shapelet_based/_dilated_shapelet_transform.py", line 234, in _fit
+    self.shapelets_ = random_dilated_shapelet_extraction(
+  File "/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/numba/core/dispatcher.py", line 424, in _compile_for_args
+    error_rewrite(e, 'typing')
+  File "/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/numba/core/dispatcher.py", line 365, in error_rewrite
+    raise e.with_traceback(None)
+numba.core.errors.TypingError: Failed in nopython mode pipeline (step: nopython frontend)
+Cannot unify array(float64, 3d, C) and array(float32, 3d, A) for 'X_subs.2', defined at /storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/aeon/transformations/collection/shapelet_based/_dilated_shapelet_transform.py (819)
+
+File "../../../scratch/sp-venv/lib/python3.10/site-packages/aeon/transformations/collection/shapelet_based/_dilated_shapelet_transform.py", line 819:
+def random_dilated_shapelet_extraction(
+    <source elided>
+                    X_subs = normalise_subsequences(X_subs, X_means, X_stds)
+                x_dist = compute_shapelet_dist_vector(X_subs, _val)
+                ^
+
+During: typing of assignment at /storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/aeon/transformations/collection/shapelet_based/_dilated_shapelet_transform.py (819)
+
+File "../../../scratch/sp-venv/lib/python3.10/site-packages/aeon/transformations/collection/shapelet_based/_dilated_shapelet_transform.py", line 819:
+def random_dilated_shapelet_extraction(
+    <source elided>
+                    X_subs = normalise_subsequences(X_subs, X_means, X_stds)
+                x_dist = compute_shapelet_dist_vector(X_subs, _val)
+                ^
+
+During: Pass nopython_type_inference

@@ -1,0 +1,19 @@
+amlworld inf {'epsilon_spent': inf, 'detection': {'pr_auc': 0.3932325842901391, 'roc_auc': 0.6651100064028697, 'recall@1%fpr': 0.03002388263391334}, 'nearest_account_dist_median': 0.28939738869667053, 'nearest_is_member': 0.8680555555555556, 'member_base_rate': 0.49997864069375025}
+/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/opacus/privacy_engine.py:98: UserWarning: Secure RNG turned off. This is perfectly fine for experimentation as it allows for much faster training performance, but remember to turn it on and retrain one last time before production with ``secure_mode`` turned on.
+  warnings.warn(
+/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/opacus/accountants/analysis/rdp.py:332: UserWarning: Optimal order is the largest alpha. Please consider expanding the range of alphas to get a tighter privacy bound.
+  warnings.warn(
+sys:1: UserWarning: Full backward hook is firing when gradients are computed with respect to module outputs since no inputs require gradients. See https://docs.pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module.register_full_backward_hook for more details.
+amlworld 8.0 {'epsilon_spent': 7.9965467381818085, 'detection': {'pr_auc': 0.4234859442186736, 'roc_auc': 0.6870021745492424, 'recall@1%fpr': 0.05185943364039577}, 'nearest_account_dist_median': 0.46770137548446655, 'nearest_is_member': 0.7638888888888888, 'member_base_rate': 0.49997864069375025}
+/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/opacus/privacy_engine.py:98: UserWarning: Secure RNG turned off. This is perfectly fine for experimentation as it allows for much faster training performance, but remember to turn it on and retrain one last time before production with ``secure_mode`` turned on.
+  warnings.warn(
+/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/opacus/accountants/analysis/rdp.py:332: UserWarning: Optimal order is the largest alpha. Please consider expanding the range of alphas to get a tighter privacy bound.
+  warnings.warn(
+sys:1: UserWarning: Full backward hook is firing when gradients are computed with respect to module outputs since no inputs require gradients. See https://docs.pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module.register_full_backward_hook for more details.
+amlworld 4.0 {'epsilon_spent': 3.9931418034424047, 'detection': {'pr_auc': 0.41240669838219757, 'roc_auc': 0.68472757317707, 'recall@1%fpr': 0.037871033776867964}, 'nearest_account_dist_median': 0.4667881727218628, 'nearest_is_member': 0.7986111111111112, 'member_base_rate': 0.49997864069375025}
+/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/opacus/privacy_engine.py:98: UserWarning: Secure RNG turned off. This is perfectly fine for experimentation as it allows for much faster training performance, but remember to turn it on and retrain one last time before production with ``secure_mode`` turned on.
+  warnings.warn(
+/storage/home/hcoda1/9/gsharma80/scratch/sp-venv/lib/python3.10/site-packages/opacus/accountants/analysis/rdp.py:332: UserWarning: Optimal order is the largest alpha. Please consider expanding the range of alphas to get a tighter privacy bound.
+  warnings.warn(
+sys:1: UserWarning: Full backward hook is firing when gradients are computed with respect to module outputs since no inputs require gradients. See https://docs.pytorch.org/docs/main/generated/torch.nn.Module.html#torch.nn.Module.register_full_backward_hook for more details.
+amlworld 1.0 {'epsilon_spent': 0.9942431518670107, 'detection': {'pr_auc': 0.4079877449940583, 'roc_auc': 0.6832792087474725, 'recall@1%fpr': 0.033776867963152504}, 'nearest_account_dist_median': 0.4707658290863037, 'nearest_is_member': 0.75, 'member_base_rate': 0.49997864069375025}

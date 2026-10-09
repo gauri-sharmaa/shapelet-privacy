@@ -1,0 +1,40 @@
+---------------------------------------
+Begin Slurm Prolog: Oct-08-2026 22:17:18
+Job ID:    13905724
+User ID:   gsharma80
+Account:   paceship-masbench
+Job name:  shapelet-gpu
+Partition: gpu-h100
+QOS:       inferno
+---------------------------------------
+
+CondaError: Run 'conda init' before 'conda deactivate'
+
+name, memory.total [MiB]
+NVIDIA H100 80GB HBM3, 81559 MiB
+GPU: True NVIDIA H100 80GB HBM3
+[samld seed 0] prototype network
+[samld seed 0] DP-SGD shapelets
+[samld seed 1] prototype network
+[samld seed 1] DP-SGD shapelets
+[samld seed 2] prototype network
+[samld seed 2] DP-SGD shapelets
+[amlworld seed 0] prototype network
+[amlworld seed 0] DP-SGD shapelets
+[amlworld seed 1] prototype network
+[amlworld seed 1] DP-SGD shapelets
+[amlworld seed 2] prototype network
+[amlworld seed 2] DP-SGD shapelets
+[berka seed 0] prototype network
+[berka seed 0] DP-SGD shapelets
+[berka seed 1] prototype network
+[berka seed 1] DP-SGD shapelets
+[berka seed 2] prototype network
+[berka seed 2] DP-SGD shapelets
+[berka] LiRA audit (32 shadow models)
+                    X_subs = normalise_subsequences(X_subs, X_means, X_stds)
+                x_dist = compute_shapelet_dist_vector(X_subs, _val)
+                ^
+
+During: Pass nopython_type_inference
+ALL DONE. Now push results:  git add -f results/*.json runs/*/results/*.json && git commit -m 'GPU results' && git push

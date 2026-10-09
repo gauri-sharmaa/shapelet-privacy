@@ -1,0 +1,15 @@
+{
+  "protonet": {
+    "pr_auc_before_projection": 0.9578286612251984,
+    "pr_auc_after_projection": 0.9565878433534464,
+    "n_prototypes": 20,
+    "frac_unique_customer": 1.0,
+    "frac_correct_source": 1.0,
+    "n_customers_exposed": 19,
+    "n_exposed_positive": 9
+  },
+  "knn_case_based": {
+    "pr_auc": 0.44224219428885614,
+    "note": "each explanation is a full training account (identifiable by construction)"
+  }
+}
