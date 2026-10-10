@@ -55,6 +55,8 @@ ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
       <div class="card"><b>0.5</b><span>is what the usual privacy test scores on shapelet models. A coin flip: "safe".</span><small>A per-person test catches the leak with zero false alarms.</small></div>
       <div class="card"><b>100%</b><span>of identified people come with their label.</span><small>So the model reveals who was flagged.</small></div>
       <div class="card good"><b>0</b><span>people exposed by learned shapelets.</span><small>Best accuracy on dataset 1; some accuracy cost on the others.</small></div>
+      <div class="card"><b>92–98%</b><span>of a prototype network's examples point to one real customer.</span><small>So the leak isn't just a shapelet problem.</small></div>
+      <div class="card good"><b>−0.01</b><span>accuracy lost when learned shapelets get a formal privacy guarantee (DP, ε=1).</span><small>SAML-D. Costs more on the real bank data (0.36 → 0.29).</small></div>
     </div>
   </section>
 
@@ -82,7 +84,8 @@ ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
       <li>Sharing a shapelet model can share pieces of real customers' histories, including who was flagged.</li>
       <li>It happens with real customers too, and in big banks.</li>
       <li>The usual privacy test won't catch it. A per-person test does.</li>
-      <li>Hiding the amounts doesn't fix it. Learned shapelets do.</li>
+      <li>Hiding the amounts doesn't fix it. Learned shapelets do, and they can be made formally private for little cost.</li>
+      <li>Prototype networks that "show a training example" have the same problem.</li>
     </ul>
     <p class="note">Limits: the attacker needs most of a person's transactions; two of the three datasets are synthetic.</p>
   </section>
