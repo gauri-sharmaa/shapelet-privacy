@@ -246,5 +246,13 @@ N.update({
 for k in ["scaleN", "scaleExtra", "scaleKeep", "auditTpr", "auditMembers", "auditNonmembers"]:
     N.setdefault(k, "--")
 N.update(N_extra)
+import json as _json, os as _os
+_lf = "runs/berka/results/lira_final.json"
+if _os.path.exists(_lf):
+    L = _json.load(open(_lf))
+    N.update({"liraShadows": str(L["n_shadows"]),
+              "liraRdstAuc": f"{L['rdst_lira']['auc']:.2f}", "liraRdstTpr": f"{100*L['rdst_lira']['tpr@0.1%fpr']:.1f}",
+              "liraAuditTpr": f"{100*L['rdst_per_explanation']['tpr@0.1%fpr']:.1f}",
+              "liraCbAuc": f"{L['catboost_lira']['auc']:.2f}", "liraCbTpr": f"{100*L['catboost_lira']['tpr@0.1%fpr']:.1f}"})
 open("paper/numbers.tex", "w").write("\n".join(f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in N.items()) + "\n")
 print(N)
