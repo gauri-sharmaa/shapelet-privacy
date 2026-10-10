@@ -19,7 +19,8 @@ from rdst_attack import raw_windows, match
 
 
 def rdst_score(X, y, idx_train, seed, k):
-    t = RandomDilatedShapeletTransform(max_shapelets=k, random_state=seed, n_jobs=4).fit(X[idx_train], y[idx_train])
+    t = RandomDilatedShapeletTransform(max_shapelets=k, random_state=seed, n_jobs=4).fit(
+        np.ascontiguousarray(X[idx_train]), y[idx_train])
     D = match(raw_windows(t), X)
     hit = D <= 1e-3
     uniq_hits = hit[hit.sum(1) == 1].sum(0)
@@ -53,6 +54,7 @@ def metrics(mem, s):
 
 def main(a):
     d, X, y, tr, te = load(seed=0)
+    X = np.ascontiguousarray(X, dtype=np.float64)   # newer aeon/numba versions require float64 input
     n = len(y)
     Xf = np.c_[d["static"], X.reshape(n, -1)]
     mem = np.zeros(n)
