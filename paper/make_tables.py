@@ -146,6 +146,41 @@ Training & PR-AUC & Nearest-is-member (chance) & Claims \\
     t4.append(r"\bottomrule\end{tabular}\end{table}")
     open("paper/tables.tex", "a").write("\n".join(t4) + "\n")
 
+# ---- Beyond shapelets (prototype networks) and DP-SGD learned shapelets ----
+def lj(d, p):
+    return [json.load(open(f)) for f in sorted(glob.glob(d + p))]
+DS = [("SAML-D", "results/"), ("AMLworld", "runs/amlworld/results/"), ("Berka", "runs/berka/results/")]
+t5 = [r"""\begin{table}[t]
+\caption{Beyond shapelets and a formal defence (mean over 3 seeds). ProtoNet: prototype network whose prototypes are projected onto training patches (ProtoPNet-style); Re-ID: projected prototypes matching only their source customer. DP: learned shapelets trained with DP-SGD ($\delta = 1/n$); PR-AUC at $\varepsilon=\infty$ / 8 / 1.}
+\label{tab:proto}
+\small\setlength{\tabcolsep}{2.5pt}
+\centering
+\begin{tabular}{lccc}
+\toprule
+& SAML-D & AMLworld & Berka \\
+\midrule"""]
+P = {n: lj(d, "protonet_seed*.json") for n, d in DS}
+Dp = {n: lj(d, "dp_shapelets_seed*.json") for n, d in DS}
+row = lambda lab, f: t5.append(lab + " & " + " & ".join(f(n) for n, _ in DS) + r" \\")
+row("ProtoNet PR-AUC", lambda n: f"{np.mean([x['protonet']['pr_auc_after_projection'] for x in P[n]]):.3f}")
+row("ProtoNet Re-ID (\\%)", lambda n: f"{100*np.mean([x['protonet']['frac_correct_source'] for x in P[n]]):.0f}")
+row("Customers exposed / 20", lambda n: f"{np.mean([x['protonet']['n_customers_exposed'] for x in P[n]]):.1f}")
+t5.append(r"\midrule")
+for e, lab in [("inf", r"DP $\varepsilon=\infty$"), ("8.0", r"DP $\varepsilon=8$"), ("1.0", r"DP $\varepsilon=1$")]:
+    row(lab + " PR-AUC", lambda n, e=e: f"{np.mean([x[e]['detection']['pr_auc'] for x in Dp[n]]):.3f}")
+t5.append(r"\bottomrule\end{tabular}\end{table}")
+open("paper/tables.tex", "a").write("\n".join(t5) + "\n")
+N_extra = {
+ "protoReid": f"{100*np.mean([x['protonet']['frac_correct_source'] for n,_ in DS for x in P[n]]):.0f}",
+ "protoReidMin": f"{100*min(np.mean([x['protonet']['frac_correct_source'] for x in P[n]]) for n,_ in DS):.0f}",
+ "protoReidMax": f"{100*max(np.mean([x['protonet']['frac_correct_source'] for x in P[n]]) for n,_ in DS):.0f}",
+ "dpSamldOne": f"{np.mean([x['1.0']['detection']['pr_auc'] for x in Dp['SAML-D']]):.3f}",
+ "dpSamldInf": f"{np.mean([x['inf']['detection']['pr_auc'] for x in Dp['SAML-D']]):.3f}",
+ "dpBerkaOne": f"{np.mean([x['1.0']['detection']['pr_auc'] for x in Dp['Berka']]):.2f}",
+ "dpBerkaInf": f"{np.mean([x['inf']['detection']['pr_auc'] for x in Dp['Berka']]):.2f}",
+ "dpNearSamld": f"{100*np.mean([x['1.0']['nearest_is_member'] for x in Dp['SAML-D']]):.0f}",
+}
+
 # Macros used in the text.
 def mean(v, f=1):
     v = [x for x in v if x is not None]
@@ -210,5 +245,6 @@ N.update({
 })
 for k in ["scaleN", "scaleExtra", "scaleKeep", "auditTpr", "auditMembers", "auditNonmembers"]:
     N.setdefault(k, "--")
+N.update(N_extra)
 open("paper/numbers.tex", "w").write("\n".join(f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in N.items()) + "\n")
 print(N)

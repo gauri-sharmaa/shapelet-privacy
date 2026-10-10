@@ -84,3 +84,20 @@ Training & PR-AUC & Nearest-is-member (chance) & Claims \\
 200 epochs, 1k train & 0.928 & 4\% (3\%) & 0 \\
 400 epochs, 300 train & 0.895 & 0\% (1\%) & 0 \\
 \bottomrule\end{tabular}\end{table}
+\begin{table}[t]
+\caption{Beyond shapelets and a formal defence (mean over 3 seeds). ProtoNet: prototype network whose prototypes are projected onto training patches (ProtoPNet-style); Re-ID: projected prototypes matching only their source customer. DP: learned shapelets trained with DP-SGD ($\delta = 1/n$); PR-AUC at $\varepsilon=\infty$ / 8 / 1.}
+\label{tab:proto}
+\small\setlength{\tabcolsep}{2.5pt}
+\centering
+\begin{tabular}{lccc}
+\toprule
+& SAML-D & AMLworld & Berka \\
+\midrule
+ProtoNet PR-AUC & 0.959 & 0.479 & 0.338 \\
+ProtoNet Re-ID (\%) & 92 & 98 & 93 \\
+Customers exposed / 20 & 16.7 & 18.3 & 17.7 \\
+\midrule
+DP $\varepsilon=\infty$ PR-AUC & 0.961 & 0.398 & 0.357 \\
+DP $\varepsilon=8$ PR-AUC & 0.954 & 0.414 & 0.288 \\
+DP $\varepsilon=1$ PR-AUC & 0.947 & 0.412 & 0.288 \\
+\bottomrule\end{tabular}\end{table}
