@@ -1,0 +1,70 @@
+---------------------------------------
+Begin Slurm Prolog: Oct-10-2026 15:35:03
+Job ID:    13940817
+User ID:   gsharma80
+Account:   paceship-masbench
+Job name:  shapelet-lira
+Partition: cpu-small
+QOS:       embers
+---------------------------------------
+shadow 1/32
+shadow 2/32
+shadow 3/32
+shadow 4/32
+shadow 5/32
+shadow 6/32
+shadow 7/32
+shadow 8/32
+shadow 9/32
+shadow 10/32
+shadow 11/32
+shadow 12/32
+shadow 13/32
+shadow 14/32
+shadow 15/32
+shadow 16/32
+shadow 17/32
+shadow 18/32
+shadow 19/32
+shadow 20/32
+shadow 21/32
+shadow 22/32
+shadow 23/32
+shadow 24/32
+shadow 25/32
+shadow 26/32
+shadow 27/32
+shadow 28/32
+shadow 29/32
+shadow 30/32
+shadow 31/32
+shadow 32/32
+{
+ "n_shadows": 32,
+ "k": 300,
+ "rdst_lira": {
+  "auc": 0.5234715061728394,
+  "tpr@0.1%fpr": 0.035111111111111114,
+  "tpr@1%fpr": 0.041777777777777775
+ },
+ "rdst_aggregate": {
+  "auc": 0.50915812345679,
+  "tpr@0.1%fpr": 0.0,
+  "tpr@1%fpr": 0.0
+ },
+ "rdst_per_explanation": {
+  "auc": 0.5473530864197531,
+  "tpr@0.1%fpr": 0.09866666666666667,
+  "tpr@1%fpr": 0.09866666666666667
+ },
+ "catboost_lira": {
+  "auc": 0.7927500246913579,
+  "tpr@0.1%fpr": 0.10711111111111112,
+  "tpr@1%fpr": 0.23777777777777778
+ },
+ "catboost_aggregate": {
+  "auc": 0.6239934814814814,
+  "tpr@0.1%fpr": 0.003111111111111111,
+  "tpr@1%fpr": 0.017777777777777778
+ }
+}
