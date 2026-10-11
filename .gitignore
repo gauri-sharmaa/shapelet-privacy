@@ -8,3 +8,5 @@ catboost_info/
 **/catboost_info/
 runs/berka/logs/lira.log
 runs/berka/results/lira.json
+logs/explain*
+runs/*/logs/explain*
