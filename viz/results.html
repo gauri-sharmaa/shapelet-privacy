@@ -48,6 +48,8 @@ ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
   <section>
     <h2>What we found</h2>
     <div class="cards">
+      <div class="card"><b>100%</b><span>of alerts are explained with another real customer's exact history, even if the model never leaves the bank.</span><small>All 3 datasets. The same ~15 people are shown again and again.</small></div>
+      <div class="card"><b>Illegal?</b><span>The model records who was flagged. Revealing that is "tipping off", which AML law forbids.</span><small>Normal models (CatBoost) don't store who was flagged.</small></div>
       <div class="card"><b>86%</b><span>of the best shapelet model's patterns point to exactly one customer.</span><small>About 830 people per model, with their weekly amounts.</small></div>
       <div class="card"><b>1 in 7</b><span>real bank customers singled out by one model.</span><small>Real data (Berka): about 640 of 4,500 people.</small></div>
       <div class="card"><b>250k</b><span>accounts searched, and every match was still unique.</span><small>A bigger bank doesn't hide anyone.</small></div>
@@ -81,7 +83,8 @@ ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
   <section>
     <h2>Bottom line</h2>
     <ul>
-      <li>Sharing a shapelet model can share pieces of real customers' histories, including who was flagged.</li>
+      <li>Sharing a shapelet model can share pieces of real customers' histories, including who was flagged. That can break tipping-off laws.</li>
+      <li>Even just showing its explanations to someone outside the AML team leaks other customers.</li>
       <li>It happens with real customers too, and in big banks.</li>
       <li>The usual privacy test won't catch it. A per-person test does.</li>
       <li>Hiding the amounts doesn't fix it. Learned shapelets do, and they can be made formally private for little cost.</li>
