@@ -1,0 +1,35 @@
+{
+  "n_alerts": 3951,
+  "alert_precision": 0.90584662110858,
+  "m": 3,
+  "median_patterns_shown": 3.0,
+  "global_top1": {
+    "frac_alerts_showing_other_customer": 0.9997468995191091,
+    "n_other_customers_exposed": 8,
+    "n_exposed_flagged": 2,
+    "n_exposed_training_members": 8,
+    "label_shown_correct": 1.0
+  },
+  "global_top3": {
+    "frac_alerts_showing_other_customer": 1.0,
+    "n_other_customers_exposed": 14,
+    "n_exposed_flagged": 3,
+    "n_exposed_training_members": 14,
+    "label_shown_correct": 1.0
+  },
+  "local_top1": {
+    "frac_alerts_showing_other_customer": 0.4216654011642622,
+    "n_other_customers_exposed": 29,
+    "n_exposed_flagged": 5,
+    "n_exposed_training_members": 29,
+    "label_shown_correct": 1.0
+  },
+  "local_top3": {
+    "frac_alerts_showing_other_customer": 0.49683624398886356,
+    "n_other_customers_exposed": 32,
+    "n_exposed_flagged": 5,
+    "n_exposed_training_members": 32,
+    "label_shown_correct": 1.0
+  },
+  "median_nonzero_cells_per_leaking_pattern": 12.0
+}

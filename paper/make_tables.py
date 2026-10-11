@@ -170,6 +170,28 @@ for e, lab in [("inf", r"DP $\varepsilon=\infty$"), ("8.0", r"DP $\varepsilon=8$
     row(lab + " PR-AUC", lambda n, e=e: f"{np.mean([x[e]['detection']['pr_auc'] for x in Dp[n]]):.3f}")
 t5.append(r"\bottomrule\end{tabular}\end{table}")
 open("paper/tables.tex", "a").write("\n".join(t5) + "\n")
+# Explanation-only leakage (model stays in the bank; only alert explanations are shown).
+Ex = {n: lj(d, "explain_leak_seed*.json") for n, d in DS}
+Ex = {n: v for n, v in Ex.items() if v}
+if Ex:
+    t6 = [r"""\begin{table}[t]
+\caption{Explanation-only leakage (RDST, mean over seeds). Alerts: top-$N$ test accounts, $N$ = number of test positives. Each alert is explained by 3 shapelets that occur in it: the most important ones (\emph{global}) or the best-matching among the 50 most important (\emph{local}). We count alerts whose explanation contains another customer's exact history, and the distinct customers so exposed.}
+\label{tab:expl}
+\small\setlength{\tabcolsep}{2.5pt}
+\centering
+\begin{tabular}{l""" + "c" * len(Ex) + r"""}
+\toprule
+& """ + " & ".join(Ex) + r""" \\
+\midrule"""]
+    em = lambda n, k, f, s=1: np.mean([x[k][f] for x in Ex[n]]) * s
+    row6 = lambda lab, f: t6.append(lab + " & " + " & ".join(f(n) for n in Ex) + r" \\")
+    row6("Alerts explained", lambda n: f"{np.mean([x['n_alerts'] for x in Ex[n]]):,.0f}")
+    for v in ("global", "local"):
+        row6(f"Alerts showing another customer, {v} (\\%)", lambda n, v=v: f"{em(n, v + '_top3', 'frac_alerts_showing_other_customer', 100):.0f}")
+        row6(f"Customers exposed, {v}", lambda n, v=v: f"{em(n, v + '_top3', 'n_other_customers_exposed'):.0f}")
+        row6(f"\\quad of which flagged, {v}", lambda n, v=v: f"{em(n, v + '_top3', 'n_exposed_flagged'):.0f}")
+    t6.append(r"\bottomrule\end{tabular}\end{table}")
+    open("paper/tables.tex", "a").write("\n".join(t6) + "\n")
 N_extra = {
  "protoReid": f"{100*np.mean([x['protonet']['frac_correct_source'] for n,_ in DS for x in P[n]]):.0f}",
  "protoReidMin": f"{100*min(np.mean([x['protonet']['frac_correct_source'] for x in P[n]]) for n,_ in DS):.0f}",
@@ -246,6 +268,19 @@ N.update({
 for k in ["scaleN", "scaleExtra", "scaleKeep", "auditTpr", "auditMembers", "auditNonmembers"]:
     N.setdefault(k, "--")
 N.update(N_extra)
+if Ex:
+    allv = [em(n, v + "_top3", "frac_alerts_showing_other_customer", 100) for n in Ex for v in ("global", "local")]
+    N.update({"explMin": f"{min(allv):.0f}", "explMax": f"{max(allv):.0f}"})
+    tag = {"SAML-D": "Samld", "AMLworld": "Aml", "Berka": "Berka"}
+    for n in Ex:
+        g = em(n, "global_top3", "frac_alerts_showing_other_customer")
+        c = em(n, "global_top3", "n_other_customers_exposed")
+        al = np.mean([x["n_alerts"] for x in Ex[n]])
+        N.update({f"explG{tag[n]}": f"{100*g:.0f}", f"explL{tag[n]}": f"{em(n, 'local_top3', 'frac_alerts_showing_other_customer', 100):.0f}",
+                  f"explCust{tag[n]}": f"{c:.0f}", f"explAlerts{tag[n]}": f"{al:,.0f}",
+                  f"explShown{tag[n]}": f"{g * al / max(c, 1):,.0f}"})  # lower bound on alerts per exposed customer
+    loc = [em(n, "local_top3", "frac_alerts_showing_other_customer", 100) for n in Ex]
+    N.update({"explLMin": f"{min(loc):.0f}", "explLMax": f"{max(loc):.0f}"})
 import json as _json, os as _os
 _lf = "runs/berka/results/lira_final.json"
 if _os.path.exists(_lf):
