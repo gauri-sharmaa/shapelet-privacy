@@ -13,3 +13,5 @@ runs/*/logs/explain*
 logs/*.log
 runs/*/logs/*.log
 logs/*_done
+results/lira2_cache/
+runs/*/results/lira2_cache/
