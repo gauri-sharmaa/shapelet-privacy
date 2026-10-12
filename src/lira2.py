@@ -4,7 +4,7 @@
                   (what leaks if only the shapelets are shared)
   full model      s = logit of the probability the full detector assigns to the true label
 Models: RDST (1,000 shapelets, as in the main tables) + ExtraTrees; learned shapelets + ExtraTrees;
-DP-SGD learned shapelets at epsilon = 1 with their own (DP-trained) linear head; CatBoost.
+CatBoost; optionally (--dp) DP-SGD learned shapelets at epsilon = 1 with their own DP-trained linear head.
 Also the per-explanation audit for RDST (accounts matched exactly by a shapelet that matches no other
 account), with member / non-member counts. Shadow scores are cached per shadow, so the run is resumable.
 Usage: DATA_NPZ=data/berka_monthly.npz python3 src/lira2.py
@@ -87,13 +87,14 @@ def metrics(mem, s):
     return {"auc": float(roc_auc_score(mem, s)), "tpr@0.1%fpr": at(0.001), "tpr@1%fpr": at(0.01)}
 
 
-def all_scores(X, Xf, y, idx, seed, k, audit=False):
+def all_scores(X, Xf, y, idx, seed, k, audit=False, dp=False):
     r_s, r_f, uh = run_rdst(X, y, idx, seed, k, audit)
     l_s, l_f = run_learned(X, y, idx, seed)
-    d_s, d_f = run_dp(X, y, idx, seed, 1.0)
     c_f = run_cb(Xf, y, idx, seed)
-    return {"rdst_shapelets": r_s, "rdst_full": r_f, "learned_shapelets": l_s, "learned_full": l_f,
-            "dp1_shapelets": d_s, "dp1_full": d_f, "catboost_full": c_f}, uh
+    out = {"rdst_shapelets": r_s, "rdst_full": r_f, "learned_shapelets": l_s, "learned_full": l_f, "catboost_full": c_f}
+    if dp:  # DP-SGD on CPU is slow; its epsilon already bounds any membership attack
+        out["dp1_shapelets"], out["dp1_full"] = run_dp(X, y, idx, seed, 1.0)
+    return out, uh
 
 
 def main(a):
@@ -113,9 +114,9 @@ def main(a):
         inmask[idx] = True
         cache = f"results/lira2_cache/shadow{s}_k{a.k}.npz"
         if os.path.exists(cache):
-            sc = dict(np.load(cache))
+            sc = {k: v for k, v in np.load(cache).items() if a.dp or not k.startswith("dp1")}
         else:
-            sc, _ = all_scores(X, Xf, y, idx, 1000 + s, a.k)
+            sc, _ = all_scores(X, Xf, y, idx, 1000 + s, a.k, dp=a.dp)
             np.savez(cache, **sc)
         for key, v in sc.items():
             ins.setdefault(key, [[] for _ in range(n)])
@@ -123,7 +124,7 @@ def main(a):
             for i in range(n):
                 (ins if inmask[i] else outs)[key][i].append(v[i])
         print(f"shadow {s + 1}/{a.shadows}", flush=True)
-    tgt, uh = all_scores(X, Xf, y, tr, 0, a.k, audit=True)
+    tgt, uh = all_scores(X, Xf, y, tr, 0, a.k, audit=True, dp=a.dp)
     out = {"n_shadows": a.shadows, "k": a.k, "n_members": int(mem.sum()), "n_nonmembers": int(n - mem.sum())}
     for key, v in tgt.items():
         out[key] = {"lira": metrics(mem, lira(v, ins[key], outs[key])), "aggregate": metrics(mem, v)}
@@ -139,4 +140,5 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--shadows", type=int, default=32)
     p.add_argument("--k", type=int, default=1000)
+    p.add_argument("--dp", action="store_true", help="also run LiRA on DP-SGD learned shapelets (slow on CPU)")
     main(p.parse_args())

@@ -1,0 +1,82 @@
+{
+  "as_trained": {
+    "detection": {
+      "pr_auc": 0.5706729629420434,
+      "roc_auc": 0.7805365477247882,
+      "recall@1%fpr": 0.13817809621289662
+    },
+    "unique": 0.468,
+    "top1": 1.0,
+    "n_identifiable_before": 468
+  },
+  "noise-0.1": {
+    "detection": {
+      "pr_auc": 0.5571550601734724,
+      "roc_auc": 0.7712997685463324,
+      "recall@1%fpr": 0.13476629136813376
+    },
+    "unique": 0.0,
+    "top1": 0.8354700854700855,
+    "n_identifiable_before": 468
+  },
+  "noise-0.25": {
+    "detection": {
+      "pr_auc": 0.5494380975080373,
+      "roc_auc": 0.767285123372092,
+      "recall@1%fpr": 0.1337427499147049
+    },
+    "unique": 0.0,
+    "top1": 0.7286324786324786,
+    "n_identifiable_before": 468
+  },
+  "noise-0.5": {
+    "detection": {
+      "pr_auc": 0.540057824683048,
+      "roc_auc": 0.7605117536171392,
+      "recall@1%fpr": 0.12555441828727396
+    },
+    "unique": 0.0,
+    "top1": 0.6452991452991453,
+    "n_identifiable_before": 468
+  },
+  "noise-1.0": {
+    "detection": {
+      "pr_auc": 0.529839218969055,
+      "roc_auc": 0.7536149810507565,
+      "recall@1%fpr": 0.12555441828727396
+    },
+    "unique": 0.0,
+    "top1": 0.4337606837606838,
+    "n_identifiable_before": 468
+  },
+  "kanon-5": {
+    "detection": {
+      "pr_auc": 0.5684466207934378,
+      "roc_auc": 0.7777169674957732,
+      "recall@1%fpr": 0.13988399863527806
+    },
+    "unique": 0.009,
+    "top1": 0.4337606837606838,
+    "n_identifiable_before": 468
+  },
+  "kanon-20": {
+    "detection": {
+      "pr_auc": 0.5681827162030446,
+      "roc_auc": 0.7772580420253163,
+      "recall@1%fpr": 0.14568406687137495
+    },
+    "unique": 0.01,
+    "top1": 0.2841880341880342,
+    "n_identifiable_before": 468
+  },
+  "kanon-50": {
+    "detection": {
+      "pr_auc": 0.5673430267974482,
+      "roc_auc": 0.776575856040656,
+      "recall@1%fpr": 0.1419310815421358
+    },
+    "unique": 0.01,
+    "top1": 0.2863247863247863,
+    "n_identifiable_before": 468
+  }
+}

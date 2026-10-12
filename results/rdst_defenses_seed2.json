@@ -1,0 +1,82 @@
+{
+  "as_trained": {
+    "detection": {
+      "pr_auc": 0.9379422205556288,
+      "roc_auc": 0.9851971352387378,
+      "recall@1%fpr": 0.6031384459630473
+    },
+    "unique": 0.816,
+    "top1": 1.0,
+    "n_identifiable_before": 816
+  },
+  "noise-0.1": {
+    "detection": {
+      "pr_auc": 0.9259854972588459,
+      "roc_auc": 0.9831585534666842,
+      "recall@1%fpr": 0.5677043786383195
+    },
+    "unique": 0.0,
+    "top1": 0.7169117647058824,
+    "n_identifiable_before": 816
+  },
+  "noise-0.25": {
+    "detection": {
+      "pr_auc": 0.9258612165573771,
+      "roc_auc": 0.9827080382848119,
+      "recall@1%fpr": 0.5550493545937737
+    },
+    "unique": 0.0,
+    "top1": 0.6556372549019608,
+    "n_identifiable_before": 816
+  },
+  "noise-0.5": {
+    "detection": {
+      "pr_auc": 0.9215154206886652,
+      "roc_auc": 0.9816016135052322,
+      "recall@1%fpr": 0.5251834978486459
+    },
+    "unique": 0.0,
+    "top1": 0.5428921568627451,
+    "n_identifiable_before": 816
+  },
+  "noise-1.0": {
+    "detection": {
+      "pr_auc": 0.9153921669526844,
+      "roc_auc": 0.9796265709302961,
+      "recall@1%fpr": 0.509997468995191
+    },
+    "unique": 0.0,
+    "top1": 0.2267156862745098,
+    "n_identifiable_before": 816
+  },
+  "kanon-5": {
+    "detection": {
+      "pr_auc": 0.9355268824588985,
+      "roc_auc": 0.9849631516286815,
+      "recall@1%fpr": 0.5818780055682106
+    },
+    "unique": 0.013,
+    "top1": 0.44730392156862747,
+    "n_identifiable_before": 816
+  },
+  "kanon-20": {
+    "detection": {
+      "pr_auc": 0.9354258215205944,
+      "roc_auc": 0.9848164282098236,
+      "recall@1%fpr": 0.5914958238420653
+    },
+    "unique": 0.007,
+    "top1": 0.3541666666666667,
+    "n_identifiable_before": 816
+  },
+  "kanon-50": {
+    "detection": {
+      "pr_auc": 0.9349378550435411,
+      "roc_auc": 0.9849846681547746,
+      "recall@1%fpr": 0.586433814224247
+    },
+    "unique": 0.002,
+    "top1": 0.35784313725490197,
+    "n_identifiable_before": 816
+  }
+}

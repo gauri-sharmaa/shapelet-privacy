@@ -307,6 +307,9 @@ Model & AUC & TPR (\%%) & AUC & TPR (\%%) \\
     fm = lambda m: f"{m['auc']:.2f} & {100 * m['tpr@1%fpr']:.1f}"
     for lab, a_, b_ in [("RDST", "rdst_shapelets", "rdst_full"), ("Learned shapelets", "learned_shapelets", "learned_full"),
                         (r"DP-SGD learned, $\varepsilon{=}1$", "dp1_shapelets", "dp1_full"), ("CatBoost", None, "catboost_full")]:
+        if b_ not in L2:  # DP model: report the guarantee instead (TPR <= e^eps * FPR + delta)
+            t7.append(f"{lab} & \\multicolumn{{4}}{{c}}{{bound from the guarantee: TPR $\\leq$ {100 * (np.e * 0.01 + 1 / 2250):.1f}}} \\\\")
+            continue
         t7.append(f"{lab} & {fm(L2[a_]['lira']) if a_ else 'n/a & n/a'} & {fm(L2[b_]['lira'])} \\\\")
     pe = L2["rdst_per_explanation"]
     t7.append(r"\midrule")
@@ -316,7 +319,7 @@ Model & AUC & TPR (\%%) & AUC & TPR (\%%) \\
     tp = lambda k: f"{100 * L2[k]['lira']['tpr@1%fpr']:.1f}"
     N.update({"liraShadows": str(L2["n_shadows"]), "liraRdstShpTpr": tp("rdst_shapelets"), "liraRdstFullTpr": tp("rdst_full"),
               "liraLearnShpTpr": tp("learned_shapelets"), "liraLearnFullTpr": tp("learned_full"),
-              "liraDpShpTpr": tp("dp1_shapelets"), "liraDpFullTpr": tp("dp1_full"), "liraCbFullTpr": tp("catboost_full"),
+              "liraCbFullTpr": tp("catboost_full"), "dpBound": f"{100 * (np.e * 0.01 + 1 / 2250):.1f}",
               "auditBerkaMembers": f"{pe['members_flagged']:,}", "auditBerkaNon": str(pe["nonmembers_flagged"]),
               "auditBerkaTpr": f"{100 * pe['members_flagged'] / L2['n_members']:.1f}"})
 
