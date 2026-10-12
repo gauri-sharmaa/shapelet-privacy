@@ -1,0 +1,82 @@
+{
+  "as_trained": {
+    "detection": {
+      "pr_auc": 0.4529403559283564,
+      "roc_auc": 0.8392665395740811,
+      "recall@1%fpr": 0.07917888563049853
+    },
+    "unique": 0.744,
+    "top1": 1.0,
+    "n_identifiable_before": 744
+  },
+  "noise-0.1": {
+    "detection": {
+      "pr_auc": 0.4597432147719821,
+      "roc_auc": 0.8385176559866906,
+      "recall@1%fpr": 0.10850439882697947
+    },
+    "unique": 0.0,
+    "top1": 0.7043010752688172,
+    "n_identifiable_before": 744
+  },
+  "noise-0.25": {
+    "detection": {
+      "pr_auc": 0.434933101901812,
+      "roc_auc": 0.8277429493570355,
+      "recall@1%fpr": 0.08797653958944282
+    },
+    "unique": 0.0,
+    "top1": 0.3870967741935484,
+    "n_identifiable_before": 744
+  },
+  "noise-0.5": {
+    "detection": {
+      "pr_auc": 0.42040094883507,
+      "roc_auc": 0.8201581027667986,
+      "recall@1%fpr": 0.08797653958944282
+    },
+    "unique": 0.0,
+    "top1": 0.1478494623655914,
+    "n_identifiable_before": 744
+  },
+  "noise-1.0": {
+    "detection": {
+      "pr_auc": 0.4171169384081491,
+      "roc_auc": 0.8222050512389991,
+      "recall@1%fpr": 0.06744868035190615
+    },
+    "unique": 0.0,
+    "top1": 0.030913978494623656,
+    "n_identifiable_before": 744
+  },
+  "kanon-5": {
+    "detection": {
+      "pr_auc": 0.45412687405110885,
+      "roc_auc": 0.8393348992041096,
+      "recall@1%fpr": 0.09090909090909091
+    },
+    "unique": 0.006,
+    "top1": 0.3333333333333333,
+    "n_identifiable_before": 744
+  },
+  "kanon-20": {
+    "detection": {
+      "pr_auc": 0.451464060321815,
+      "roc_auc": 0.8367218715484147,
+      "recall@1%fpr": 0.09090909090909091
+    },
+    "unique": 0.004,
+    "top1": 0.15456989247311828,
+    "n_identifiable_before": 744
+  },
+  "kanon-50": {
+    "detection": {
+      "pr_auc": 0.4546843528894582,
+      "roc_auc": 0.8362195434805653,
+      "recall@1%fpr": 0.09090909090909091
+    },
+    "unique": 0.002,
+    "top1": 0.10080645161290322,
+    "n_identifiable_before": 744
+  }
+}

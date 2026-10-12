@@ -70,7 +70,7 @@ class LearnedShapelets(nn.Module):
         return self.head(self.dists(x)).squeeze(-1)
 
 
-def train_learned(X, y, tr, seed, epochs=30, per=8, lengths=(4, 8, 12)):
+def train_learned(X, y, tr, seed, epochs=30, per=8, lengths=(4, 8, 12), return_model=False):
     torch.manual_seed(seed)
     m = LearnedShapelets(X.shape[1], lengths, per)
     opt = torch.optim.Adam(m.parameters(), lr=1e-2)
@@ -86,7 +86,7 @@ def train_learned(X, y, tr, seed, epochs=30, per=8, lengths=(4, 8, 12)):
             loss.backward()
             opt.step()
     shp = [(c, S[j].detach().numpy().astype(np.float32)) for (c, L), S in zip(m.cfg, m.S) for j in range(per)]
-    return shp
+    return (shp, m) if return_model else shp
 
 
 def main(args):

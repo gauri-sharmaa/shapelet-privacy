@@ -1,0 +1,82 @@
+{
+  "as_trained": {
+    "detection": {
+      "pr_auc": 0.39688480894819833,
+      "roc_auc": 0.8274587576366923,
+      "recall@1%fpr": 0.06451612903225806
+    },
+    "unique": 0.724,
+    "top1": 1.0,
+    "n_identifiable_before": 724
+  },
+  "noise-0.1": {
+    "detection": {
+      "pr_auc": 0.394631458452479,
+      "roc_auc": 0.8228978645680516,
+      "recall@1%fpr": 0.05278592375366569
+    },
+    "unique": 0.0,
+    "top1": 0.6781767955801105,
+    "n_identifiable_before": 724
+  },
+  "noise-0.25": {
+    "detection": {
+      "pr_auc": 0.3865130826183823,
+      "roc_auc": 0.8171579599028527,
+      "recall@1%fpr": 0.0469208211143695
+    },
+    "unique": 0.0,
+    "top1": 0.3397790055248619,
+    "n_identifiable_before": 724
+  },
+  "noise-0.5": {
+    "detection": {
+      "pr_auc": 0.37916492043248295,
+      "roc_auc": 0.8132668375913447,
+      "recall@1%fpr": 0.04398826979472141
+    },
+    "unique": 0.0,
+    "top1": 0.12569060773480664,
+    "n_identifiable_before": 724
+  },
+  "noise-1.0": {
+    "detection": {
+      "pr_auc": 0.3760360088109207,
+      "roc_auc": 0.8088127084392651,
+      "recall@1%fpr": 0.0469208211143695
+    },
+    "unique": 0.0,
+    "top1": 0.022099447513812154,
+    "n_identifiable_before": 724
+  },
+  "kanon-5": {
+    "detection": {
+      "pr_auc": 0.39453613659142,
+      "roc_auc": 0.8279441878184676,
+      "recall@1%fpr": 0.04398826979472141
+    },
+    "unique": 0.003,
+    "top1": 0.3370165745856354,
+    "n_identifiable_before": 724
+  },
+  "kanon-20": {
+    "detection": {
+      "pr_auc": 0.39731726708501647,
+      "roc_auc": 0.8278512494450581,
+      "recall@1%fpr": 0.05865102639296188
+    },
+    "unique": 0.004,
+    "top1": 0.18093922651933703,
+    "n_identifiable_before": 724
+  },
+  "kanon-50": {
+    "detection": {
+      "pr_auc": 0.39985109652512174,
+      "roc_auc": 0.8278005557868348,
+      "recall@1%fpr": 0.05571847507331378
+    },
+    "unique": 0.002,
+    "top1": 0.11464088397790055,
+    "n_identifiable_before": 724
+  }
+}

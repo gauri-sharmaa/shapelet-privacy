@@ -43,7 +43,7 @@ class DPShapelets(nn.Module):
         return self.head(torch.cat([b(x) for b in self.banks], 1)).squeeze(-1)
 
 
-def train(X, y, tr, seed, eps, epochs, per, lengths, batch=256, delta=None):
+def train(X, y, tr, seed, eps, epochs, per, lengths, batch=256, delta=None, return_model=False):
     torch.manual_seed(seed)
     m = DPShapelets(X.shape[1], lengths, per).to(DEV)
     opt = torch.optim.Adam(m.parameters(), lr=1e-2)
@@ -68,7 +68,7 @@ def train(X, y, tr, seed, eps, epochs, per, lengths, batch=256, delta=None):
         spent = pe.get_epsilon(delta or 1.0 / len(tr))
     core = m._module if hasattr(m, "_module") else m
     shp = [(b.c, b.S[j].detach().cpu().numpy().astype(np.float32)) for b in core.banks for j in range(b.S.shape[0])]
-    return shp, spent
+    return (shp, spent, core) if return_model else (shp, spent)
 
 
 def main(a):
