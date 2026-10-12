@@ -1,2 +1,17 @@
-% placeholder until LiRA finishes
-\begin{table}[t]\caption{LiRA placeholder XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX.}\label{tab:lira}\small\centering\begin{tabular}{lcccc}\toprule a&b&c&d&e\\\midrule x&1&2&3&4\\x&1&2&3&4\\x&1&2&3&4\\x&1&2&3&4\\\midrule x&1&2&3&4\\\bottomrule\end{tabular}\end{table}
+\begin{table}[t]
+\caption{Membership audits on Berka (LiRA with 32 shadow models; 2,250 members, 2,250 non-members). \emph{Shapelets only}: the score is the account's distance to the nearest released shapelet, i.e.\ what leaks when only the shapelets are shared. \emph{Full model}: the score is the detector's confidence in the true label. TPR is measured at 1\% FPR.}
+\label{tab:lira}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{Shapelets only} & \multicolumn{2}{c}{Full model} \\
+Model & AUC & TPR (\%) & AUC & TPR (\%) \\
+\midrule
+RDST & 0.54 & 7.5 & 0.90 & 4.9 \\
+Learned shapelets & 0.49 & 0.9 & 0.81 & 19.2 \\
+DP-SGD learned, $\varepsilon{=}1$ & \multicolumn{4}{c}{bound from the guarantee: TPR $\leq$ 2.8} \\
+CatBoost & n/a & n/a & 0.79 & 23.8 \\
+\midrule
+RDST, per-pattern check & -- & 28.7 & & \\
+\bottomrule\end{tabular}\end{table}

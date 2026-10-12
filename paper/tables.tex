@@ -119,6 +119,23 @@ Customers exposed, local & 33 & 29 & 18 \\
 \quad of which flagged, local & 5 & 9 & 2 \\
 \bottomrule\end{tabular}\end{table}
 \begin{table}[t]
+\caption{Membership audits on Berka (LiRA with 32 shadow models; 2,250 members, 2,250 non-members). \emph{Shapelets only}: the score is the account's distance to the nearest released shapelet, i.e.\ what leaks when only the shapelets are shared. \emph{Full model}: the score is the detector's confidence in the true label. TPR is measured at 1\% FPR.}
+\label{tab:lira}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{Shapelets only} & \multicolumn{2}{c}{Full model} \\
+Model & AUC & TPR (\%) & AUC & TPR (\%) \\
+\midrule
+RDST & 0.54 & 7.5 & 0.90 & 4.9 \\
+Learned shapelets & 0.49 & 0.9 & 0.81 & 19.2 \\
+DP-SGD learned, $\varepsilon{=}1$ & \multicolumn{4}{c}{bound from the guarantee: TPR $\leq$ 2.8} \\
+CatBoost & n/a & n/a & 0.79 & 23.8 \\
+\midrule
+RDST, per-pattern check & -- & 28.7 & & \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[t]
 \caption{Mitigations applied to RDST (mean over seeds; AMLworld seed 0). Each defence rewrites the released windows, after which the detector is refit. Link: among shapelets that singled out their source before the change, the share whose nearest account is still that source (chance is below 0.1\%).}
 \label{tab:rdstdef}
 \small\setlength{\tabcolsep}{2.5pt}

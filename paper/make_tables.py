@@ -355,6 +355,6 @@ import re as _re
 for blk in _re.findall(r"\\begin\{table\}.*?\\end\{table\}", open("paper/tables.tex").read(), flags=_re.S):
     lab = _re.search(r"\\label\{tab:([^}]*)\}", blk).group(1)
     open(f"paper/tab_{lab}.tex", "w").write(blk + "\n")
-    open(f"paper/tab_{lab}_h.tex", "w").write(blk.replace(r"\begin{table}[t]", r"\begin{table}[h!]", 1) + "\n")  # appendix copy
+    open(f"paper/tab_{lab}_h.tex", "w").write(blk.replace(r"\begin{table}[t]", r"\begin{table}[H]", 1) + "\n")  # appendix copy
 open("paper/numbers.tex", "w").write("\n".join(f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in N.items()) + "\n")
 print(N)
