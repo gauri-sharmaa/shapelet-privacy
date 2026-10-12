@@ -35,7 +35,7 @@ rdn, dfn, sw = load("rdst_normonly_attack_seed*.json"), load("defenses_seed*.jso
 
 t = []
 t.append(r"""\begin{table}[t]
-\caption{SAML-D: detection on held-out accounts and leakage of the released model (mean $\pm$ std over %d seeds). Re-ID: share of released shapelets that match \emph{only} their source customer among %s candidate accounts.}
+\caption{SAML-D, exact copy of the data (mean $\pm$ std over %d seeds). PR-AUC and recall at 1\%% FPR on held-out accounts; MIA AUC is the aggregate membership audit; Re-ID is the share of released shapelets that match exactly one of %s accounts.}
 \label{tab:main}
 \small\setlength{\tabcolsep}{3pt}
 \resizebox{\columnwidth}{!}{%%
@@ -57,7 +57,7 @@ t.append(f"Learned shapelets & {ms([g(r, 'learned', 'detection', 'pr_auc') for r
 t.append(r"\bottomrule\end{tabular}}\end{table}")
 
 t.append(r"""\begin{table}[t]
-\caption{Mitigations (shapelet transform; mean over seeds). Unique: shapelet matches only its source; Top-1: source is the nearest account.}
+\caption{Mitigations applied to the classic shapelet transform (SAML-D, mean over seeds). Unique: the shapelet matches only its source. Top-1: the source is the nearest account.}
 \label{tab:def}
 \small\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lccc}
@@ -79,7 +79,7 @@ real = load("realistic_seed*.json")
 def rv(model, key, field):
     return [r[model][key][field] for r in real if model in r and key in r[model]]
 t2 = [r"""\begin{table}[t]
-\caption{Re-identification by a realistic adversary (SAML-D, 300 sampled RDST shapelets, mean over seeds). The adversary's copy of the data has perturbed amounts and/or misses transactions, and holds all or half of the accounts; it claims an identity only if the nearest account is at least $2\times$ closer than the runner-up. Cust.: customers correctly re-identified; Prec.: share of claims that are correct.}
+\caption{A data holder with imperfect data (SAML-D, 300 sampled RDST shapelets per seed, mean over seeds). Its copy may have perturbed amounts and missing transactions, and may cover all or half of the customers. It names a customer only when the nearest account is at least twice as close as the second nearest. Cust.: customers named correctly. Prec.: share of names that are correct.}
 \label{tab:real}
 \small\setlength{\tabcolsep}{3pt}
 \centering
@@ -104,7 +104,7 @@ ab, ast, ard, arn, adf = (la("amlworld", p) for p in ["baselines_seed*.json", "s
 bb, bst, brd, brn, bdf = (la("berka", p) for p in ["baselines_seed*.json", "stc_attack_seed*.json", "rdst_attack_seed*.json", "rdst_normonly_attack_seed*.json", "defenses_seed*.json"])
 breal = la("berka", "realistic_seed*.json")
 t3 = [r"""\begin{table}[t]
-\caption{AMLworld HI-Small (23,409 accounts, 6-hour bins) and Berka (4,500 real accounts, monthly bins, proxy task); mean over seeds. MIA: aggregate membership AUC. Re-ID: share of shapelets matching only their source; Cust.: customers singled out per model.}
+\caption{AMLworld HI-Small (23,409 accounts, 6-hour bins) and Berka (4,500 real accounts, monthly bins, loan task), mean over seeds. MIA: aggregate membership AUC. Re-ID: share of shapelets that match exactly one account. Cust.: customers singled out per model.}
 \label{tab:aml}
 \small\setlength{\tabcolsep}{2.5pt}
 \centering
@@ -133,7 +133,7 @@ probe = load("learned_probe_seed*.json")
 if probe:
     P = probe[0]
     t4 = [r"""\begin{table}[t]
-\caption{Pushing learned shapelets to memorise (SAML-D, seed 0). Nearest-is-member: share of shapelets whose nearest account is a training member, vs.\ the members' share of the pool (chance). Claims: confident re-identifications ($d_2 \geq 2 d_1$).}
+\caption{Learned shapelets trained hard on small sets to encourage memorising (SAML-D, seed 0). Nearest is member: share of shapelets whose nearest account is a training member, with the members' share of all accounts in brackets. Claims: confident identifications (second-nearest account at least twice as far).}
 \label{tab:probe}
 \small\setlength{\tabcolsep}{3pt}
 \centering
@@ -151,7 +151,7 @@ def lj(d, p):
     return [json.load(open(f)) for f in sorted(glob.glob(d + p))]
 DS = [("SAML-D", "results/"), ("AMLworld", "runs/amlworld/results/"), ("Berka", "runs/berka/results/")]
 t5 = [r"""\begin{table}[t]
-\caption{Beyond shapelets and a formal defence (mean over 3 seeds). ProtoNet: prototype network whose prototypes are projected onto training patches (ProtoPNet-style); Re-ID: projected prototypes matching only their source customer. DP: learned shapelets trained with DP-SGD ($\delta = 1/n$); PR-AUC at $\varepsilon=\infty$ / 8 / 1.}
+\caption{Prototype networks and DP-SGD learned shapelets (mean over 3 seeds). ProtoNet: a ProtoPNet-style network whose prototypes are projected onto training patches; Re-ID is the share of projected prototypes that match only their source customer. DP: learned shapelets trained with DP-SGD ($\delta = 1/n$) at $\varepsilon = \infty$, 8 and 1.}
 \label{tab:proto}
 \small\setlength{\tabcolsep}{2.5pt}
 \centering
@@ -175,7 +175,7 @@ Ex = {n: lj(d, "explain_leak_seed*.json") for n, d in DS}
 Ex = {n: v for n, v in Ex.items() if v}
 if Ex:
     t6 = [r"""\begin{table}[t]
-\caption{Explanation-only leakage (RDST, mean over seeds). Alerts: top-$N$ test accounts, $N$ = number of test positives. Each alert is explained by 3 shapelets that occur in it: the most important ones (\emph{global}) or the best-matching among the 50 most important (\emph{local}). We count alerts whose explanation contains another customer's exact history, and the distinct customers so exposed.}
+\caption{Explanations that show the stored shapelet (RDST, mean over seeds). The top $N$ test accounts are alerted, where $N$ is the number of test positives. Each alert is explained by three shapelets that occur in it, either the most important ones (\emph{global}) or the best-matching among the 50 most important (\emph{local}). We count alerts whose explanation contains another customer's exact window, and how many different customers are shown.}
 \label{tab:expl}
 \small\setlength{\tabcolsep}{2.5pt}
 \centering
@@ -273,12 +273,12 @@ if Ex:
     N.update({"explMin": f"{min(allv):.0f}", "explMax": f"{max(allv):.0f}"})
     tag = {"SAML-D": "Samld", "AMLworld": "Aml", "Berka": "Berka"}
     for n in Ex:
-        g = em(n, "global_top3", "frac_alerts_showing_other_customer")
+        gf = em(n, "global_top3", "frac_alerts_showing_other_customer")
         c = em(n, "global_top3", "n_other_customers_exposed")
         al = np.mean([x["n_alerts"] for x in Ex[n]])
-        N.update({f"explG{tag[n]}": f"{100*g:.0f}", f"explL{tag[n]}": f"{em(n, 'local_top3', 'frac_alerts_showing_other_customer', 100):.0f}",
+        N.update({f"explG{tag[n]}": f"{100*gf:.0f}", f"explL{tag[n]}": f"{em(n, 'local_top3', 'frac_alerts_showing_other_customer', 100):.0f}",
                   f"explCust{tag[n]}": f"{c:.0f}", f"explAlerts{tag[n]}": f"{al:,.0f}",
-                  f"explShown{tag[n]}": f"{g * al / max(c, 1):,.0f}"})  # lower bound on alerts per exposed customer
+                  f"explShown{tag[n]}": f"{gf * al / max(c, 1):,.0f}"})  # lower bound on alerts per exposed customer
     loc = [em(n, "local_top3", "frac_alerts_showing_other_customer", 100) for n in Ex]
     N.update({"explLMin": f"{min(loc):.0f}", "explLMax": f"{max(loc):.0f}"})
 import json as _json, os as _os
@@ -289,5 +289,69 @@ if _os.path.exists(_lf):
               "liraRdstAuc": f"{L['rdst_lira']['auc']:.2f}", "liraRdstTpr": f"{100*L['rdst_lira']['tpr@0.1%fpr']:.1f}",
               "liraAuditTpr": f"{100*L['rdst_per_explanation']['tpr@0.1%fpr']:.1f}",
               "liraCbAuc": f"{L['catboost_lira']['auc']:.2f}", "liraCbTpr": f"{100*L['catboost_lira']['tpr@0.1%fpr']:.1f}"})
+
+# ---- LiRA on every model (Berka) ----
+_l2 = "runs/berka/results/lira2.json"
+if _os.path.exists(_l2):
+    L2 = _json.load(open(_l2))
+    t7 = [r"""\begin{table}[t]
+\caption{Membership audits on Berka (LiRA with %d shadow models; %s members, %s non-members). \emph{Shapelets only}: the score is the account's distance to the nearest released shapelet, i.e.\ what leaks when only the shapelets are shared. \emph{Full model}: the score is the detector's confidence in the true label. TPR is measured at 1\%% FPR.}
+\label{tab:lira}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{Shapelets only} & \multicolumn{2}{c}{Full model} \\
+Model & AUC & TPR (\%%) & AUC & TPR (\%%) \\
+\midrule""" % (L2["n_shadows"], f"{L2['n_members']:,}", f"{L2['n_nonmembers']:,}")]
+    fm = lambda m: f"{m['auc']:.2f} & {100 * m['tpr@1%fpr']:.1f}"
+    for lab, a_, b_ in [("RDST", "rdst_shapelets", "rdst_full"), ("Learned shapelets", "learned_shapelets", "learned_full"),
+                        (r"DP-SGD learned, $\varepsilon{=}1$", "dp1_shapelets", "dp1_full"), ("CatBoost", None, "catboost_full")]:
+        t7.append(f"{lab} & {fm(L2[a_]['lira']) if a_ else 'n/a & n/a'} & {fm(L2[b_]['lira'])} \\\\")
+    pe = L2["rdst_per_explanation"]
+    t7.append(r"\midrule")
+    t7.append(f"RDST, per-pattern check & -- & {100 * pe['members_flagged'] / L2['n_members']:.1f} & & \\\\")
+    t7.append(r"\bottomrule\end{tabular}\end{table}")
+    open("paper/tables.tex", "a").write("\n".join(t7) + "\n")
+    tp = lambda k: f"{100 * L2[k]['lira']['tpr@1%fpr']:.1f}"
+    N.update({"liraShadows": str(L2["n_shadows"]), "liraRdstShpTpr": tp("rdst_shapelets"), "liraRdstFullTpr": tp("rdst_full"),
+              "liraLearnShpTpr": tp("learned_shapelets"), "liraLearnFullTpr": tp("learned_full"),
+              "liraDpShpTpr": tp("dp1_shapelets"), "liraDpFullTpr": tp("dp1_full"), "liraCbFullTpr": tp("catboost_full"),
+              "auditBerkaMembers": f"{pe['members_flagged']:,}", "auditBerkaNon": str(pe["nonmembers_flagged"]),
+              "auditBerkaTpr": f"{100 * pe['members_flagged'] / L2['n_members']:.1f}"})
+
+# ---- Mitigations applied to RDST ----
+RD = {n: lj(d, "rdst_defenses_seed*.json") for n, d in DS}
+RD = {n: v for n, v in RD.items() if v}
+if RD:
+    t8 = [r"""\begin{table}[t]
+\caption{Mitigations applied to RDST (mean over seeds; AMLworld seed 0). Each defence rewrites the released windows, after which the detector is refit. Link: among shapelets that singled out their source before the change, the share whose nearest account is still that source (chance is below 0.1\%).}
+\label{tab:rdstdef}
+\small\setlength{\tabcolsep}{2.5pt}
+\centering
+\begin{tabular}{l""" + "cc" * len(RD) + r"""}
+\toprule
+& """ + " & ".join(r"\multicolumn{2}{c}{" + n + "}" for n in RD) + r""" \\
+Release & """ + " & ".join(["PR-AUC & Link"] * len(RD)) + r""" \\
+\midrule"""]
+    nm = {"as_trained": "As trained", "noise-0.1": r"Noise $\sigma{=}0.1$", "noise-0.25": r"Noise $\sigma{=}0.25$",
+          "noise-0.5": r"Noise $\sigma{=}0.5$", "noise-1.0": r"Noise $\sigma{=}1$", "kanon-5": r"Mean of $k{=}5$",
+          "kanon-20": r"Mean of $k{=}20$", "kanon-50": r"Mean of $k{=}50$"}
+    rm = lambda n, k, f, *ks: np.mean([x[k][f] if not ks else x[k][f][ks[0]] for x in RD[n]])
+    for k, lab in nm.items():
+        t8.append(lab + " & " + " & ".join(f"{rm(n, k, 'detection', 'pr_auc'):.3f} & {100 * rm(n, k, 'top1'):.0f}" for n in RD) + r" \\")
+    t8.append(r"\bottomrule\end{tabular}\end{table}")
+    open("paper/tables.tex", "a").write("\n".join(t8) + "\n")
+
+# Shares of non-empty RDST shapelets that single out one account.
+nz = [mean([g(r, "reid", "frac_unique_among_nonzero") for r in R_], 100) for R_ in (rdst, ard, brd)]
+N.update({"uniqNZmin": f"{min(nz):.0f}", "uniqNZmax": f"{max(nz):.0f}"})
+
+# One file per table, so the paper can place each one.
+import re as _re
+for blk in _re.findall(r"\\begin\{table\}.*?\\end\{table\}", open("paper/tables.tex").read(), flags=_re.S):
+    lab = _re.search(r"\\label\{tab:([^}]*)\}", blk).group(1)
+    open(f"paper/tab_{lab}.tex", "w").write(blk + "\n")
+    open(f"paper/tab_{lab}_h.tex", "w").write(blk.replace(r"\begin{table}[t]", r"\begin{table}[h!]", 1) + "\n")  # appendix copy
 open("paper/numbers.tex", "w").write("\n".join(f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in N.items()) + "\n")
 print(N)
