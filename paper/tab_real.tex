@@ -1,0 +1,15 @@
+\begin{table}[t]
+\caption{A data holder with imperfect data (SAML-D, 300 sampled RDST shapelets per seed, mean over seeds). Its copy may have perturbed amounts and missing transactions, and may cover all or half of the customers. It names a customer only when the nearest account is at least twice as close as the second nearest. Cust.: customers named correctly. Prec.: share of names that are correct.}
+\label{tab:real}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{All accounts} & \multicolumn{2}{c}{Half of accounts} \\
+Adversary's view & Cust. & Prec. & Cust. & Prec. \\
+\midrule
+Exact copy & 251 & 94\% & 125 & 86\% \\
+Amounts $\pm$5\% & 227 & 96\% & 115 & 86\% \\
+80\% of txns, $\pm$5\% & 71 & 78\% & 36 & 62\% \\
+50\% of txns, $\pm$5\% & 10 & 27\% & 5 & 17\% \\
+\bottomrule\end{tabular}\end{table}

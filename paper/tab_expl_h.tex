@@ -1,0 +1,17 @@
+\begin{table}[h!]
+\caption{Explanations that show the stored shapelet (RDST, mean over seeds). The top $N$ test accounts are alerted, where $N$ is the number of test positives. Each alert is explained by three shapelets that occur in it, either the most important ones (\emph{global}) or the best-matching among the 50 most important (\emph{local}). We count alerts whose explanation contains another customer's exact window, and how many different customers are shown.}
+\label{tab:expl}
+\small\setlength{\tabcolsep}{2.5pt}
+\centering
+\begin{tabular}{lccc}
+\toprule
+& SAML-D & AMLworld & Berka \\
+\midrule
+Alerts explained & 3,951 & 2,931 & 341 \\
+Alerts showing another customer, global (\%) & 100 & 100 & 100 \\
+Customers exposed, global & 16 & 18 & 13 \\
+\quad of which flagged, global & 4 & 5 & 2 \\
+Alerts showing another customer, local (\%) & 60 & 38 & 100 \\
+Customers exposed, local & 33 & 29 & 18 \\
+\quad of which flagged, local & 5 & 9 & 2 \\
+\bottomrule\end{tabular}\end{table}

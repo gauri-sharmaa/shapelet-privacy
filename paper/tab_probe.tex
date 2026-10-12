@@ -1,0 +1,14 @@
+\begin{table}[t]
+\caption{Learned shapelets trained hard on small sets to encourage memorising (SAML-D, seed 0). Nearest is member: share of shapelets whose nearest account is a training member, with the members' share of all accounts in brackets. Claims: confident identifications (second-nearest account at least twice as far).}
+\label{tab:probe}
+\small\setlength{\tabcolsep}{3pt}
+\centering
+\begin{tabular}{lccc}
+\toprule
+Training & PR-AUC & Nearest-is-member (chance) & Claims \\
+\midrule
+30 epochs, full train & 0.957 & 50\% (50\%) & 0 \\
+200 epochs, full train & 0.952 & 50\% (50\%) & 0 \\
+200 epochs, 1k train & 0.928 & 4\% (3\%) & 0 \\
+400 epochs, 300 train & 0.895 & 0\% (1\%) & 0 \\
+\bottomrule\end{tabular}\end{table}

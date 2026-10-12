@@ -1,0 +1,16 @@
+\begin{table}[h!]
+\caption{SAML-D, exact copy of the data (mean $\pm$ std over 3 seeds). PR-AUC and recall at 1\% FPR on held-out accounts; MIA AUC is the aggregate membership audit; Re-ID is the share of released shapelets that match exactly one of 29,946 accounts.}
+\label{tab:main}
+\small\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+Model & PR-AUC & R@1\%FPR & MIA AUC & Re-ID (\%) \\
+\midrule
+CatBoost (aggregates) & 0.983\,$\pm$\,0.001 & 0.842\,$\pm$\,0.031 & 0.504\,$\pm$\,0.002 & n/a \\
+MiniRocket & 0.955\,$\pm$\,0.002 & 0.637\,$\pm$\,0.044 & 0.508\,$\pm$\,0.003 & n/a \\
+Shapelet transform & 0.878\,$\pm$\,0.007 & 0.493\,$\pm$\,0.033 & 0.500\,$\pm$\,0.002 & 15.0\,$\pm$\,2.2 \\
+RDST & 0.948\,$\pm$\,0.006 & 0.631\,$\pm$\,0.021 & 0.520\,$\pm$\,0.001 & 85.6\,$\pm$\,1.6 \\
+RDST, norm.-only, no stats & 0.925\,$\pm$\,0.005 & 0.515\,$\pm$\,0.015 & 0.512\,$\pm$\,0.000 & 74.9\,$\pm$\,1.9 \\
+Learned shapelets & 0.957\,$\pm$\,0.004 & 0.667\,$\pm$\,0.017 & 0.500\,$\pm$\,0.000 & 0.0 \\
+\bottomrule\end{tabular}}\end{table}

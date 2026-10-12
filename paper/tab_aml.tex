@@ -1,0 +1,24 @@
+\begin{table}[t]
+\caption{AMLworld HI-Small (23,409 accounts, 6-hour bins) and Berka (4,500 real accounts, monthly bins, loan task), mean over seeds. MIA: aggregate membership AUC. Re-ID: share of shapelets that match exactly one account. Cust.: customers singled out per model.}
+\label{tab:aml}
+\small\setlength{\tabcolsep}{2.5pt}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Model & PR-AUC & MIA AUC & Re-ID (\%) & Cust. \\
+\midrule
+\multicolumn{5}{l}{\emph{AMLworld}} \\
+CatBoost & 0.619\,$\pm$\,0.004 & 0.625\,$\pm$\,0.004 & n/a & n/a \\
+MiniRocket & 0.475\,$\pm$\,0.003 & 0.586\,$\pm$\,0.003 & n/a & n/a \\
+Shapelet transform & 0.408\,$\pm$\,0.016 & 0.499\,$\pm$\,0.002 & 6.0\,$\pm$\,1.1 & -- \\
+RDST & 0.571\,$\pm$\,0.001 & 0.507\,$\pm$\,0.002 & 64.5\,$\pm$\,1.2 & 621\,$\pm$\,10 \\
+RDST, norm.-only & 0.546\,$\pm$\,0.005 & 0.498\,$\pm$\,0.002 & 40.4\,$\pm$\,1.7 & 391\,$\pm$\,14 \\
+Learned shapelets & 0.389 & 0.500 & 0.0 & 0 \\
+\multicolumn{5}{l}{\emph{Berka (real)}} \\
+CatBoost & 0.583\,$\pm$\,0.013 & 0.632\,$\pm$\,0.009 & n/a & n/a \\
+MiniRocket & 0.625\,$\pm$\,0.012 & 0.561\,$\pm$\,0.003 & n/a & n/a \\
+Shapelet transform & 0.470\,$\pm$\,0.014 & 0.502\,$\pm$\,0.002 & 43.5\,$\pm$\,2.1 & -- \\
+RDST & 0.421\,$\pm$\,0.021 & 0.530\,$\pm$\,0.003 & 75.4\,$\pm$\,0.8 & 637\,$\pm$\,6 \\
+RDST, norm.-only & 0.391\,$\pm$\,0.016 & 0.501\,$\pm$\,0.004 & 50.2\,$\pm$\,1.0 & 445\,$\pm$\,17 \\
+Learned shapelets & 0.357\,$\pm$\,0.017 & 0.499\,$\pm$\,0.001 & 0.0 & 0 \\
+\bottomrule\end{tabular}\end{table}

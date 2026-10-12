@@ -1,5 +1,5 @@
 \begin{table}[t]
-\caption{SAML-D: detection on held-out accounts and leakage of the released model (mean $\pm$ std over 3 seeds). Re-ID: share of released shapelets that match \emph{only} their source customer among 29,946 candidate accounts.}
+\caption{SAML-D, exact copy of the data (mean $\pm$ std over 3 seeds). PR-AUC and recall at 1\% FPR on held-out accounts; MIA AUC is the aggregate membership audit; Re-ID is the share of released shapelets that match exactly one of 29,946 accounts.}
 \label{tab:main}
 \small\setlength{\tabcolsep}{3pt}
 \resizebox{\columnwidth}{!}{%
@@ -15,7 +15,7 @@ RDST, norm.-only, no stats & 0.925\,$\pm$\,0.005 & 0.515\,$\pm$\,0.015 & 0.512\,
 Learned shapelets & 0.957\,$\pm$\,0.004 & 0.667\,$\pm$\,0.017 & 0.500\,$\pm$\,0.000 & 0.0 \\
 \bottomrule\end{tabular}}\end{table}
 \begin{table}[t]
-\caption{Mitigations (shapelet transform; mean over seeds). Unique: shapelet matches only its source; Top-1: source is the nearest account.}
+\caption{Mitigations applied to the classic shapelet transform (SAML-D, mean over seeds). Unique: the shapelet matches only its source. Top-1: the source is the nearest account.}
 \label{tab:def}
 \small\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lccc}
@@ -32,7 +32,7 @@ $k$-anon. mean, $k{=}20$ & 0.876\,$\pm$\,0.005 & 0.2\,$\pm$\,0.2 & 12.5\,$\pm$\,
 $k$-anon. mean, $k{=}50$ & 0.876\,$\pm$\,0.006 & 0.0\,$\pm$\,0.0 & 10.7\,$\pm$\,1.3 \\
 \bottomrule\end{tabular}\end{table}
 \begin{table}[t]
-\caption{Re-identification by a realistic adversary (SAML-D, 300 sampled RDST shapelets, mean over seeds). The adversary's copy of the data has perturbed amounts and/or misses transactions, and holds all or half of the accounts; it claims an identity only if the nearest account is at least $2\times$ closer than the runner-up. Cust.: customers correctly re-identified; Prec.: share of claims that are correct.}
+\caption{A data holder with imperfect data (SAML-D, 300 sampled RDST shapelets per seed, mean over seeds). Its copy may have perturbed amounts and missing transactions, and may cover all or half of the customers. It names a customer only when the nearest account is at least twice as close as the second nearest. Cust.: customers named correctly. Prec.: share of names that are correct.}
 \label{tab:real}
 \small\setlength{\tabcolsep}{3pt}
 \centering
@@ -47,7 +47,7 @@ Amounts $\pm$5\% & 227 & 96\% & 115 & 86\% \\
 50\% of txns, $\pm$5\% & 10 & 27\% & 5 & 17\% \\
 \bottomrule\end{tabular}\end{table}
 \begin{table}[t]
-\caption{AMLworld HI-Small (23,409 accounts, 6-hour bins) and Berka (4,500 real accounts, monthly bins, proxy task); mean over seeds. MIA: aggregate membership AUC. Re-ID: share of shapelets matching only their source; Cust.: customers singled out per model.}
+\caption{AMLworld HI-Small (23,409 accounts, 6-hour bins) and Berka (4,500 real accounts, monthly bins, loan task), mean over seeds. MIA: aggregate membership AUC. Re-ID: share of shapelets that match exactly one account. Cust.: customers singled out per model.}
 \label{tab:aml}
 \small\setlength{\tabcolsep}{2.5pt}
 \centering
@@ -71,7 +71,7 @@ RDST, norm.-only & 0.391\,$\pm$\,0.016 & 0.501\,$\pm$\,0.004 & 50.2\,$\pm$\,1.0 
 Learned shapelets & 0.357\,$\pm$\,0.017 & 0.499\,$\pm$\,0.001 & 0.0 & 0 \\
 \bottomrule\end{tabular}\end{table}
 \begin{table}[t]
-\caption{Pushing learned shapelets to memorise (SAML-D, seed 0). Nearest-is-member: share of shapelets whose nearest account is a training member, vs.\ the members' share of the pool (chance). Claims: confident re-identifications ($d_2 \geq 2 d_1$).}
+\caption{Learned shapelets trained hard on small sets to encourage memorising (SAML-D, seed 0). Nearest is member: share of shapelets whose nearest account is a training member, with the members' share of all accounts in brackets. Claims: confident identifications (second-nearest account at least twice as far).}
 \label{tab:probe}
 \small\setlength{\tabcolsep}{3pt}
 \centering
@@ -85,7 +85,7 @@ Training & PR-AUC & Nearest-is-member (chance) & Claims \\
 400 epochs, 300 train & 0.895 & 0\% (1\%) & 0 \\
 \bottomrule\end{tabular}\end{table}
 \begin{table}[t]
-\caption{Beyond shapelets and a formal defence (mean over 3 seeds). ProtoNet: prototype network whose prototypes are projected onto training patches (ProtoPNet-style); Re-ID: projected prototypes matching only their source customer. DP: learned shapelets trained with DP-SGD ($\delta = 1/n$); PR-AUC at $\varepsilon=\infty$ / 8 / 1.}
+\caption{Prototype networks and DP-SGD learned shapelets (mean over 3 seeds). ProtoNet: a ProtoPNet-style network whose prototypes are projected onto training patches; Re-ID is the share of projected prototypes that match only their source customer. DP: learned shapelets trained with DP-SGD ($\delta = 1/n$) at $\varepsilon = \infty$, 8 and 1.}
 \label{tab:proto}
 \small\setlength{\tabcolsep}{2.5pt}
 \centering
@@ -102,7 +102,7 @@ DP $\varepsilon=8$ PR-AUC & 0.954 & 0.414 & 0.288 \\
 DP $\varepsilon=1$ PR-AUC & 0.947 & 0.412 & 0.288 \\
 \bottomrule\end{tabular}\end{table}
 \begin{table}[t]
-\caption{Explanation-only leakage (RDST, mean over seeds). Alerts: top-$N$ test accounts, $N$ = number of test positives. Each alert is explained by 3 shapelets that occur in it: the most important ones (\emph{global}) or the best-matching among the 50 most important (\emph{local}). We count alerts whose explanation contains another customer's exact history, and the distinct customers so exposed.}
+\caption{Explanations that show the stored shapelet (RDST, mean over seeds). The top $N$ test accounts are alerted, where $N$ is the number of test positives. Each alert is explained by three shapelets that occur in it, either the most important ones (\emph{global}) or the best-matching among the 50 most important (\emph{local}). We count alerts whose explanation contains another customer's exact window, and how many different customers are shown.}
 \label{tab:expl}
 \small\setlength{\tabcolsep}{2.5pt}
 \centering
@@ -117,4 +117,23 @@ Customers exposed, global & 16 & 18 & 13 \\
 Alerts showing another customer, local (\%) & 60 & 38 & 100 \\
 Customers exposed, local & 33 & 29 & 18 \\
 \quad of which flagged, local & 5 & 9 & 2 \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[t]
+\caption{Mitigations applied to RDST (mean over seeds; AMLworld seed 0). Each defence rewrites the released windows, after which the detector is refit. Link: among shapelets that singled out their source before the change, the share whose nearest account is still that source (chance is below 0.1\%).}
+\label{tab:rdstdef}
+\small\setlength{\tabcolsep}{2.5pt}
+\centering
+\begin{tabular}{lcc}
+\toprule
+& \multicolumn{2}{c}{Berka} \\
+Release & PR-AUC & Link \\
+\midrule
+As trained & 0.420 & 100 \\
+Noise $\sigma{=}0.1$ & 0.420 & 70 \\
+Noise $\sigma{=}0.25$ & 0.409 & 35 \\
+Noise $\sigma{=}0.5$ & 0.396 & 14 \\
+Noise $\sigma{=}1$ & 0.389 & 3 \\
+Mean of $k{=}5$ & 0.422 & 33 \\
+Mean of $k{=}20$ & 0.419 & 17 \\
+Mean of $k{=}50$ & 0.424 & 11 \\
 \bottomrule\end{tabular}\end{table}
